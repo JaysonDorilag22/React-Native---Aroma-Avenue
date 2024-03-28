@@ -8,49 +8,54 @@ import {
   formHeading,
 } from "../styles/styles";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchMessages } from "../redux/actions/chatActions";
 
-const UserChat = ({ item }) => {
-  const { messages } = useSelector((state) => state.chat)
-  const navigation = useNavigation();
-  const [lastMessage, setLastMessage] = useState(null)
-  useEffect(() => {
-    fetchMessages();
-  }, []);
+import { loadUser } from "../redux/actions/userActions";
 
-  const getLastMessage = (item) => {
-    const userMessages = messages.filter(
-      (message) => {
-        
-        return message.messageType === "text" && (message.senderId._id === item._id || message.recepientId === item._id)
-      }
-    );
-
-    const n = userMessages.length;
-
-    return userMessages[n - 1];
-  };
+const UserChat = ({ item, lastMessage, newMessages, setNewMessages }) => {
   
-  useEffect(()=>{
-    const message = getLastMessage(item);
-    setLastMessage(message);
-    
-  }, [messages,item])
-  useEffect(()=>{
-    if (lastMessage){
-      console.log(lastMessage)
-    }
-  },[lastMessage])
+  const navigation = useNavigation();
+  
+  // const [hasBeenPressed, setHasBeenPressed] = useState(false)
+  // const [lastSeenMessage, setLastSeenMessage] = useState({})
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadUser())
+  }, []);
+ 
+  
+  // useEffect(() => {
+  //   const currentLastMessage = lastMessage[item._id]?.message;
+  //   const currentLastSeenMessage = lastSeenMessage[item._id]?.message;
+
+  //   if (currentLastMessage !== currentLastSeenMessage) {
+  //     setHasBeenPressed(false);
+
+  //     // Update lastSeenMessage for the current chatbox only
+  //     setLastSeenMessage(prevState => ({
+  //       ...prevState,
+  //       [item._id]: lastMessage[item._id],
+  //     }));
+  //   }
+  // }, [lastMessage]);
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
     return new Date(time).toLocaleString("en-US", options);
   };
   return (
     <Pressable
-      onPress={() =>
+      onPress={() =>{
         navigation.navigate("chatmessagescreen", {
           recepientId: item._id,
         })
+        // setHasBeenPressed(true);
+        setNewMessages((prevNewMessages) => ({
+          ...prevNewMessages,
+          [item._id]: false,
+        }, ()=>{
+          console.log(newMessages)
+        }))
+      }
       }
       style={{
         flexDirection: "row",
@@ -70,21 +75,34 @@ const UserChat = ({ item }) => {
       />
 
       <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 15, fontWeight: "500" }}>{item?.name}</Text>
-        {lastMessage && (
-          <Text style={{ marginTop: 3, color: "gray", fontWeight: "500" }}>
-            {lastMessage?.message}
+        <Text style={{ fontSize: 15, fontWeight: newMessages[item._id] ? "bold" : "500" }}>{item?.name}</Text>
+        {lastMessage[item._id] && (
+          <Text
+            style={{
+              marginTop: 3,
+              color:newMessages[item._id] ? "black" : "gray" ,
+              fontWeight:newMessages[item._id] ? "bold" :"500",
+
+            }}
+          >
+            {lastMessage[item._id]?.message}
           </Text>
         )}
       </View>
 
       <View>
-        <Text style={{ fontSize: 11, fontWeight: "400", color: "#585858" }}>
-          {lastMessage && formatTime(lastMessage?.timeStamp)}
+        <Text
+          style={{
+            fontSize: 11,
+            fontWeight:newMessages[item._id] ? "bold" :"400",
+            color: newMessages[item._id] ? "black" :"#585858",
+          }}
+        >
+          {lastMessage[item._id] && formatTime(lastMessage[item._id]?.timeStamp)}
         </Text>
       </View>
     </Pressable>
-    
+
   );
 };
 

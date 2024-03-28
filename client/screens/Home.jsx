@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../redux/actions/productActions";
 import { useSetCategories } from "../utils/hooks";
 
-
 const Home = () => {
   const [category, setCategory] = useState("");
   const [activeSearch, setActiveSearch] = useState(false);
@@ -26,16 +25,16 @@ const Home = () => {
   const isFocused = useIsFocused();
 
   const { products } = useSelector((state) => state.product);
-  const { user } = useSelector((state) => state.user);
+   const { user } = useSelector((state) => state.user );
 
-  console.log(user);
+console.log(user)
   const categoryButtonHandler = (id) => {
     setCategory(id);
   };
 
   const addToCardHandler = (id, name, price, image, stock) => {
     if (!user) {
-      navigate.navigate("login");
+      navigate.navigate("login"); 
       return;
     }
     if (stock === 0)
@@ -71,14 +70,15 @@ const Home = () => {
     dispatch({
       type: "addToWishlist",
       payload: {
-        product: id,
-        name,
-        price,
-        image,
-        stock,
-      },
-    });
-
+        product:
+          id,
+          name,
+          price,
+          image,
+          stock,
+      }
+    })
+    
     Toast.show({
       type: "success",
       text1: "Added To Wishlist",
@@ -176,7 +176,7 @@ const Home = () => {
         {/* Products */}
 
         <View style={{ flex: 1 }}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {products.map((item, index) => (
               <ProductCard
                 stock={item.stock}
@@ -199,7 +199,5 @@ const Home = () => {
     </>
   );
 };
-
-
 
 export default Home;
