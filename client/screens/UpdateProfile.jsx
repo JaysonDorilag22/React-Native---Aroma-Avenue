@@ -52,8 +52,8 @@ const UpdateProfile = ({ navigation }) => {
                 style={{
                     padding: 20,
                     elevation: 10,
-                    borderRadius: 10,
-                    backgroundColor: colors.color3,
+                    borderRadius: 5,
+                    backgroundColor: "white",
                 }}
             >
                 <View>

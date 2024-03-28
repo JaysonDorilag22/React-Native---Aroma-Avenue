@@ -4,7 +4,7 @@ import { getDataUri } from "../utils/features.js";
 import cloudinary from "cloudinary";
 import { Category } from "../models/category.js";
 
-// this is an edit
+
 export const addCategoryImage = asyncError(async (req, res, next) => {
     const category = await Category.findById(req.params.id);
     if (!category) return next(new ErrorHandler("Category not found", 404));

@@ -1,7 +1,7 @@
 import { StyleSheet, Platform, StatusBar } from "react-native";
 
 export const colors = {
-  color1: "#c70049",
+  color1: "red",
   color1_light: "rgba(227,25,99,1)",
   color1_light2: "rgba(199,0,73,0.8)",
   color2: "white",
@@ -63,6 +63,7 @@ export const formStyles = StyleSheet.create({
     backgroundColor: colors.color1,
     margin: 20,
     padding: 6,
+    borderRadius: 5,
   },
 
   or: {
