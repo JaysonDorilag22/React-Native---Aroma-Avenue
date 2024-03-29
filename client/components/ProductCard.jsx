@@ -2,7 +2,8 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { colors } from "../styles/styles";
 import { Button } from "react-native-paper";
-import { FontAwesome } from 'react-native-vector-icons';
+import { FontAwesome } from "react-native-vector-icons";
+import { Avatar } from "react-native-paper";
 
 const ProductCard = ({
   stock,
@@ -17,103 +18,53 @@ const ProductCard = ({
 }) => {
   const isOutOfStock = stock === 0;
 
+  const avatarOptions = {
+    color: "black",
+    size: 30,
+    style: {
+      backgroundColor: "white",
+    },
+  };
   return (
     <TouchableOpacity
-      activeOpacity={1}
-      onPress={() => navigate.navigate("productdetails", { id })}
-    >
-      <View
-        style={{
-          elevation: 15,
-          width: 250,
-          alignItems: "center",
-          justifyContent: "space-between",
-          margin: 20,
-          borderRadius: 20,
-          height: 400,
-          backgroundColor: i % 2 === 0 ? colors.color1 : colors.color2,
-        }}
-      >
+    activeOpacity={1}
+    onPress={() => navigate.navigate("productdetails", { id })}
+    style={{ width: "50%", padding: 5 }}
+  >
+    <View style={{ width: 155, height: 220, margin: 5, borderRadius: 5, borderWidth: 1, borderColor: colors.color5 }}>
+      <View style={{ position: 'relative' }}>
         <Image
-          source={{
-            uri: image,
-          }}
-          style={{
-            width: "100%",
-            height: 200,
-            resizeMode: "contain",
-            position: "absolute",
-            left: 50,
-            top: 105,
-          }}
+          source={{ uri: image }}
+          style={{ width: "100%", height: 120, resizeMode: "contain" }}
         />
-
-        <View
-          style={{
-            flexDirection: "row",
-            padding: 20,
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Text
-            numberOfLines={2}
-            style={{
-              color: i % 2 === 0 ? colors.color2 : colors.color3,
-              fontSize: 25,
-              fontWeight: "300",
-              width: "60%",
-            }}
-          >
-            {name}
-          </Text>
-
-          <Text
-            numberOfLines={2}
-            style={{
-              color: i % 2 === 0 ? colors.color2 : colors.color3,
-              fontSize: 20,
-              fontWeight: "700",
-            }}
-          >
-            ₹{price}
-          </Text>
-        </View>
-
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            backgroundColor: i % 2 === 0 ? colors.color2 : colors.color3,
-            borderRadius: 0,
-            paddingVertical: 5,
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            width: "100%",
-          }}
-        >
-          <Button
-            onPress={() => addToCardHandler(id, name, price, image, stock)}
-            textColor={i % 2 === 0 ? colors.color1 : colors.color2}
-            style={{ flex: 8 }}
-            disabled={isOutOfStock}
-          >
-            {isOutOfStock ? "Out Of Stock" : "Add To Cart"}
-          </Button>
-          <TouchableOpacity
-            onPress={() => addToWishlistHandler(id, name, price, image, stock)}
-            style={{ flex: 2, padding: 10 }}
-          >
-            <FontAwesome
-              name="heart"
-              size={24}
-              color={colors.color1}
-            />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={() => addToWishlistHandler(id, name, price, image, stock)} style={{ position: 'absolute', top: 5, right: 5 }}>
+          <Avatar.Icon {...avatarOptions} icon="heart-outline" />
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+  
+      <View style={{ padding: 5, marginLeft: 5, flex: 1 }}>
+        <Text numberOfLines={1} style={{ fontSize: 12, fontWeight: "300" }}>
+          {name}
+        </Text>
+        <Text style={{ fontSize: 12, fontWeight: "700" }}>${price}</Text>
+      </View>
+  
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 5 }}>
+      <Button
+        onPress={() => addToCardHandler(id, name, price, image, stock)}
+        textColor="white"
+        style={{ flex: 1, borderRadius: 5, marginRight: 5, backgroundColor: isOutOfStock ? colors.color5 : 'black' }}
+        disabled={isOutOfStock}
+      >
+        {isOutOfStock ? "Out Of Stock" : "Add To Cart"}
+      </Button>
+    </View>
+    </View>
+  </TouchableOpacity>
+  
+
+
+
   );
 };
 

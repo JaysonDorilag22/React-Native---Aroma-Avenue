@@ -1,40 +1,45 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
-import { defaultStyle, colors } from "../styles/styles";
-import Header from "../components/Header";
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from "react-native";
 import { Avatar, Button } from "react-native-paper";
-import SearchModal from "../components/SearchModal";
-import ProductCard from "../components/ProductCard";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import Footer from "../components/Footer";
-import Heading from "../components/Heading";
-/* import { Toast } from "react-native-paper"; */
 import Toast from "react-native-toast-message";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../redux/actions/productActions";
 import { useSetCategories } from "../utils/hooks";
+import Carousel from 'react-native-snap-carousel';
+import slide1 from '../assets/carousel/slide1.png';
+import slide2 from '../assets/carousel/slide2.png';
+import slide3 from '../assets/carousel/slide3.png';
+import slide4 from '../assets/carousel/slide4.png';
+import slide5 from '../assets/carousel/slide5.png';
+import Header from "../components/Header";
+import SearchModal from "../components/SearchModal";
+import ProductCard from "../components/ProductCard";
+import Footer from "../components/Footer";
+import Heading from "../components/Heading";
+import { defaultStyle, colors } from "../styles/styles";
 
 const Home = () => {
   const [category, setCategory] = useState("");
   const [activeSearch, setActiveSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [categories, setCategories] = useState([]);
+  const [carouselItems, setCarouselItems] = useState([]);
 
   const navigate = useNavigation();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
   const { products } = useSelector((state) => state.product);
-   const { user } = useSelector((state) => state.user );
+  const { user } = useSelector((state) => state.user);
 
-console.log(user)
   const categoryButtonHandler = (id) => {
     setCategory(id);
   };
 
   const addToCardHandler = (id, name, price, image, stock) => {
     if (!user) {
-      navigate.navigate("login"); 
+      navigate.navigate("login");
       return;
     }
     if (stock === 0)
@@ -63,22 +68,20 @@ console.log(user)
 
   const addToWishlistHandler = (id, name, price, image, stock) => {
     if (!user) {
-      // If no user is logged in, navigate to the login page
-      navigate.navigate("login"); // Replace "Login" with your actual login screen name
+      navigate.navigate("login"); 
       return;
     }
     dispatch({
       type: "addToWishlist",
       payload: {
-        product:
-          id,
-          name,
-          price,
-          image,
-          stock,
-      }
-    })
-    
+        product: id,
+        name,
+        price,
+        image,
+        stock,
+      },
+    });
+
     Toast.show({
       type: "success",
       text1: "Added To Wishlist",
@@ -96,6 +99,25 @@ console.log(user)
     };
   }, [dispatch, searchQuery, category, isFocused]);
 
+  useEffect(() => {
+    const carouselData = [
+      { title: slide1 },
+      { title: slide2 },
+      { title: slide3 },
+      { title: slide4 },
+      { title: slide5 },
+    ];
+    setCarouselItems(carouselData);
+  }, []);
+
+  const renderCarouselItem = ({ item, index }) => {
+    return (
+      <View style={styles.carouselItem}>
+        <Image source={item.title} style={styles.carouselImage} />
+      </View>
+    );
+  };
+
   return (
     <>
       {activeSearch && (
@@ -112,14 +134,13 @@ console.log(user)
         {/* Heading Row*/}
         <View
           style={{
-            paddingTop: 10,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
           }}
         >
           {/* Heading */}
-          <Heading text1="Our" text2="Products" />
+          <Heading style={{ marginLeft: 10 }} />
 
           {/* Search bar */}
 
@@ -128,18 +149,28 @@ console.log(user)
               <Avatar.Icon
                 icon={"magnify"}
                 size={50}
-                color={"gray"}
-                style={{ backgroundColor: colors.color2, elevation: 12 }}
+                color={"black"}
+                style={{ backgroundColor: colors.color2 }}
               />
             </TouchableOpacity>
           </View>
         </View>
 
+        {/* Carousel */}
+        <Carousel
+          data={carouselItems}
+          renderItem={renderCarouselItem}
+          sliderWidth={350}
+          itemWidth={350}
+          autoplay={true}
+          loop={true}
+        />
+
         {/* Categories */}
         <View
           style={{
             flexDirection: "row",
-            height: 80,
+            height: 50,
           }}
         >
           <ScrollView
@@ -155,7 +186,7 @@ console.log(user)
                 style={{
                   backgroundColor:
                     category === item._id ? colors.color1 : colors.color5,
-                  borderRadius: 100,
+                  borderRadius: 5,
                   margin: 5,
                 }}
                 onPress={() => categoryButtonHandler(item._id)}
@@ -174,22 +205,31 @@ console.log(user)
         </View>
 
         {/* Products */}
-
-        <View style={{ flex: 1 }}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View style={{ flex: 20 }}>
+          <ScrollView
+            vertical
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap" }}
+          >
             {products.map((item, index) => (
-              <ProductCard
-                stock={item.stock}
-                name={item.name}
-                price={item.price}
-                image={item.images[0]?.url}
-                addToCardHandler={addToCardHandler}
-                addToWishlistHandler={addToWishlistHandler}
-                id={item._id}
+              <TouchableOpacity
                 key={item._id}
-                i={index}
-                navigate={navigate}
-              />
+                onPress={() => navigateToProductDetails(item._id)}
+                style={{ flexBasis: "50%" }}
+              >
+                <ProductCard
+                  stock={item.stock}
+                  name={item.name}
+                  price={item.price}
+                  image={item.images[0]?.url}
+                  addToCardHandler={addToCardHandler}
+                  addToWishlistHandler={addToWishlistHandler}
+                  id={item._id}
+                  key={item._id}
+                  i={index}
+                  navigate={navigate}
+                />
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
@@ -199,5 +239,20 @@ console.log(user)
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  carouselItem: {
+    borderRadius: 5,
+    padding: 10,
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  carouselImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 5,
+  },
+});
 
 export default Home;

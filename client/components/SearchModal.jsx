@@ -45,7 +45,7 @@ const SearchModal = ({
         top: 0,
         zIndex: 100,
         backgroundColor: colors.color2,
-        padding: 35,
+        padding: 20,
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
       }}
     >
@@ -55,7 +55,10 @@ const SearchModal = ({
           onChangeText={(query) => setSearchQuery(query)}
           value={searchQuery}
           style={{
-            marginTop: 20,
+            marginTop: 5,
+            borderRadius: 5,
+            backgroundColor: 'white',
+            borderWidth: 1, borderColor: 'black'
           }}
         />
 
@@ -91,12 +94,13 @@ const SearchItem = ({ price, name, imgSrc, handler }) => (
         padding: 20,
         borderRadius: 10,
         backgroundColor: colors.color2,
-        elevation: 5,
         width: "100%",
         alignItems: "center",
         justifyContent: "flex-end",
         flexDirection: "row",
-        marginVertical: 30,
+        marginVertical: 10,
+        borderWidth: 1, borderColor: 'black'
+
       }}
     >
       <Image
@@ -123,7 +127,7 @@ const SearchItem = ({ price, name, imgSrc, handler }) => (
             fontWeight: "900",
           }}
         >
-          ₹{price}
+          ${price}
         </Headline>
       </View>
     </View>

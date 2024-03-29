@@ -1,11 +1,11 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const Heading = ({ text1 = "Our", text2 = "Products", containerStyle }) => {
+const Heading = () => {
   return (
-    <View style={containerStyle}>
-      <Text style={{ fontSize: 25 }}>{text1}</Text>
-      <Text style={{ fontSize: 25, fontWeight: "900" }}>{text2}</Text>
+    <View style={{ marginLeft: 15 }}>
+      <Text style={{ fontSize: 25 }}>Welcome to</Text>
+      <Text style={{ fontSize: 25, fontWeight: "900" }}>Aroma Avenue</Text>
     </View>
   );
 };
