@@ -23,7 +23,6 @@ import { useMessageAndErrorUser } from "../utils/hooks";
 import { CLIENT_ID_WEB, CLIENT_ID_ANDROID, CLIENT_ID_IOS } from "@env";
 const Login = ({ navigation }) => {
   const [error, setError] = useState();
-
   const { newUser, user } = useSelector((state) => state.user);
   const configureGoogleSignIn = () => {
     GoogleSignin.configure({
@@ -73,7 +72,7 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const loading = useMessageAndErrorUser(navigation, dispatch, "profile");
+  const loading = useMessageAndErrorUser(navigation, dispatch, "home");
 
   const submitHandler = () => {
     dispatch(login(email, password));
@@ -98,7 +97,7 @@ const Login = ({ navigation }) => {
         <View style={{ marginBottom: 20, alignItems: 'center' }}>
         <Image
       source={logo}
-      style={{ width: 100, height: 100, marginBottom: -60, alignItems: "center" }} // Adjust width, height, and margin as needed
+      style={{ width: 100, height: 100, marginBottom: -60, alignItems: "center" }} 
     />
     </View>
         <View style={styles.container}>
@@ -142,7 +141,7 @@ const Login = ({ navigation }) => {
             onPress={submitHandler}
             disabled={loading || email === "" || password === ""}
           >
-            <Text style={{ color: "white", textAlign: "center" }}>Log In</Text>
+            <Text style={{ color: "white", textAlign: "center" }}>{loading ? "Logging in..." : "Log In"}</Text>
           </TouchableOpacity>
 
           <Text style={styles.or}>OR</Text>

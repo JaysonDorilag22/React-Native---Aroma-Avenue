@@ -159,9 +159,8 @@ const SignUp = ({ navigation, route }) => {
               style={styles.btn}
               onPress={submitHandler}
             >
-              <Text style={{ color: "white", textAlign: "center" }}>
-                Sign In
-              </Text>
+                          <Text style={{ color: "white", textAlign: "center" }}>{loading ? "Signing Up..." : "Sign Up"}</Text>
+
             </TouchableOpacity>
 
             <Text style={styles.or}>OR</Text>
