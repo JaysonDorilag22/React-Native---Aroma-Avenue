@@ -234,7 +234,7 @@ const Profile = ({ navigation, route }) => {
                 )}
             </View>
 
-            <Footer />
+            <Footer activeRoute={"profile"} />
         </>
     );
 };

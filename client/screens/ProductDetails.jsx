@@ -21,8 +21,12 @@ import { getProductDetails } from "../redux/actions/productActions";
 import { server } from "../redux/store";
 import { AirbnbRating } from "react-native-ratings";
 import { Table, Row, Rows, Cell } from "react-native-table-component";
-import { deleteComment, getAllComments, getProductRatings } from "../redux/actions/commentActions";
-import { FontAwesome } from 'react-native-vector-icons';
+import {
+  deleteComment,
+  getAllComments,
+  getProductRatings,
+} from "../redux/actions/commentActions";
+import { FontAwesome } from "react-native-vector-icons";
 
 const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = SLIDER_WIDTH;
@@ -32,13 +36,13 @@ const ProductDetails = ({ route: { params } }) => {
   const dispatch = useDispatch();
   const isCarousel = useRef(null);
   const isFocused = useIsFocused();
-  const { user } = useSelector((state) => state.user );
+  const { user } = useSelector((state) => state.user);
 
   const comments = useSelector((state) => state.comment.comments); // Fetch comments from Redux store
   const average = useSelector((state) => state.comment.averageRating); // Fetch comments from Redux store
   const loading = useSelector((state) => state.comment.loading); // Fetch loading state from Redux store
 
-  console.log("current user:",user)
+  console.log("current user:", user);
   const {
     product: { name, price, stock, description, images },
   } = useSelector((state) => state.product);
@@ -69,7 +73,7 @@ const ProductDetails = ({ route: { params } }) => {
 
   const addToCardHandler = () => {
     if (!user) {
-      navigate.navigate("login"); 
+      navigate.navigate("login");
       return;
     }
     if (stock === 0) {
@@ -99,7 +103,7 @@ const ProductDetails = ({ route: { params } }) => {
 
   const addToWishlistHandler = (id, name, price, image, stock) => {
     if (!user) {
-      navigate.navigate("login"); 
+      navigate.navigate("login");
       return;
     }
     dispatch({
@@ -110,9 +114,9 @@ const ProductDetails = ({ route: { params } }) => {
         price,
         image,
         stock,
-      }
-    })
-    
+      },
+    });
+
     Toast.show({
       type: "success",
       text1: "Added To Wishlist",
@@ -147,18 +151,31 @@ const ProductDetails = ({ route: { params } }) => {
         data={images}
         renderItem={CarouselCardItem}
       />
+
       <View
         style={{
           backgroundColor: colors.color2,
-          padding: 35,
-          borderTopLeftRadius: 55,
-          borderTopRightRadius: 55,
+          padding: 15,
+          borderTopLeftRadius: 5,
+          borderTopRightRadius: 5,
         }}
       >
+        {/* Rating */}
+        <AirbnbRating
+          count={5}
+          reviews={["Terrible", "Okay", "Average", "Excellent", "Amazing"]}
+          defaultRating={average}
+          size={25}
+          style={{
+          flex: 1,
+          fontSize: 18,
+        }}
+        />
+        {/* Details */}
         <Text numberOfLines={2} style={{ fontSize: 25 }}>
           {name}
         </Text>
-        <Text style={{ fontSize: 18, fontWeight: "900" }}>₹{price}</Text>
+        <Text style={{ fontSize: 18, fontWeight: "900" }}>${price}</Text>
         <Text
           style={{ letterSpacing: 1, lineHeight: 20, marginVertical: 15 }}
           numberOfLines={8}
@@ -215,32 +232,53 @@ const ProductDetails = ({ route: { params } }) => {
           </View>
         </View>
 
-        <View style={{ flexDirection: "row", marginTop: 20 }}>
-          <TouchableOpacity 
-          activeOpacity={0.9} 
-          onPress={addToCardHandler} 
-          style={{ flex: 8 }}
-          disabled={isOutOfStock}>
-            <Button 
-            icon={"cart"} 
-            style={style.btn} 
-            textColor={isOutOfStock ? colors.color2 : colors.color2}
+        <View style={{ flexDirection: "column", marginTop: 20 }}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={addToCardHandler}
+            style={{ flex: 8 }}
+            disabled={isOutOfStock}
+          >
+            <Button
+              icon={"cart"}
+              style={{
+                borderRadius: 5,
+                backgroundColor: "black",
+              }}
+              textColor={isOutOfStock ? colors.color2 : colors.color2}
             >
               {isOutOfStock ? "Out Of Stock" : "Add To Cart"}
             </Button>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => addToWishlistHandler(params.id, name, price, images[0]?.url, stock)} style={{ flex: 2, justifyContent: 'center', alignItems: 'center', padding: 10 }}>
-            <FontAwesome name="heart" size={24} color={colors.color1} />
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity
+              onPress={() =>
+                addToWishlistHandler(
+                  params.id,
+                  name,
+                  price,
+                  images[0]?.url,
+                  stock
+                )
+              }
+            >
+              <Button
+                icon={"heart"}
+                style={{
+                  borderRadius: 5,
+                  backgroundColor: "white",
+                  marginTop:4,
+                  borderWidth:1,
+                  borderColor: colors.color1
+                }}
+                
+                textColor={"black"}
+              >
+                Add to Wishlist
+              </Button>
+            </TouchableOpacity>
+          </View>
         </View>
-
-        {/* Rating */}
-        <AirbnbRating
-          count={5}
-          reviews={["Terrible", "Meh", "Hmm...", "Very Good", "Jesus"]}
-          defaultRating={average}
-          size={30}
-        />
 
         <View
           style={{
@@ -272,6 +310,14 @@ const ProductDetails = ({ route: { params } }) => {
                     <Text style={{ color: "red" }}>Delete</Text>
                   </TouchableOpacity>
                 )}
+              {/* Separator line */}
+              <View
+                style={{
+                  borderBottomWidth: 1,
+                  borderBottomColor: "gray",
+                  marginTop: 10,
+                }}
+              />
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}

@@ -140,7 +140,7 @@ const Home = () => {
           }}
         >
           {/* Heading */}
-          <Heading style={{ marginLeft: 10 }} />
+          <Heading style={{ marginLeft: 10,}} />
 
           {/* Search bar */}
 
@@ -242,11 +242,13 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   carouselItem: {
+    marginTop: 5,
     borderRadius: 5,
-    padding: 10,
+    padding: 5,
     height: 150,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: "black"
   },
   carouselImage: {
     width: '100%',

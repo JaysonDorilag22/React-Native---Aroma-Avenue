@@ -1,12 +1,12 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
-    colors,
-    defaultStyle,
-    formHeading,
-    inputOptions,
-    formStyles as styles,
-    defaultImg,
+  colors,
+  defaultStyle,
+  formHeading,
+  inputOptions,
+  formStyles as styles,
+  defaultImg,
 } from "../styles/styles";
 import { Avatar, Button, TextInput } from "react-native-paper";
 import Footer from "../components/Footer";
@@ -16,177 +16,183 @@ import { useMessageAndErrorUser } from "../utils/hooks";
 import { register } from "../redux/actions/userActions";
 
 const SignUp = ({ navigation, route }) => {
-    const [avatar, setAvatar] = useState("");
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [country, setCountry] = useState("");
-    const [pinCode, setPinCode] = useState("");
-    const [googleId, setGoogleId] = useState();
+  const [avatar, setAvatar] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [pinCode, setPinCode] = useState("");
+  const [googleId, setGoogleId] = useState();
 
-    const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.user)
-    const disableBtn = googleId ? !name || !email || !address || !city || !country || !pinCode :
-        !name || !email || !password || !address || !city || !country || !pinCode;
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const disableBtn = googleId
+    ? !name || !email || !address || !city || !country || !pinCode
+    : !name || !email || !password || !address || !city || !country || !pinCode;
 
-        const submitHandler = async () => {
-            const myForm = new FormData();
-          
-            myForm.append("name", name);
-            myForm.append("email", email);
-            myForm.append("password", password);
-            myForm.append("address", address);
-            myForm.append("city", city);
-            myForm.append("country", country);
-            myForm.append("pinCode", pinCode);
-            myForm.append("googleId", googleId);
-            if (googleId) {
-              myForm.append("file", avatar);
-            } else {
-              if (avatar !== "") {
-                myForm.append("file", {
-                  uri: avatar,
-                  type: mime.getType(avatar),
-                  name: avatar.split("/").pop(),
-                });
-              }
-            }
-          
-            try {
-              await dispatch(register(myForm));
-              navigation.navigate('login');
-            } catch (error) {
-              console.error(error);
-              // handle error here
-            }
-          };
+  const submitHandler = async () => {
+    const myForm = new FormData();
 
-    const loading = useMessageAndErrorUser(navigation, dispatch, "profile");
-    useEffect(() => {
-        if (user) {
+    myForm.append("name", name);
+    myForm.append("email", email);
+    myForm.append("password", password);
+    myForm.append("address", address);
+    myForm.append("city", city);
+    myForm.append("country", country);
+    myForm.append("pinCode", pinCode);
+    myForm.append("googleId", googleId);
+    if (googleId) {
+      myForm.append("file", avatar);
+    } else {
+      if (avatar !== "") {
+        myForm.append("file", {
+          uri: avatar,
+          type: mime.getType(avatar),
+          name: avatar.split("/").pop(),
+        });
+      }
+    }
 
-            setName(user.name)
-            setEmail(user.email)
-            setAvatar(user.picture)
-            setGoogleId(user.sub)
-            setPassword(googleId)
+    try {
+      await dispatch(register(myForm));
+      navigation.navigate("login");
+    } catch (error) {
+      console.error(error);
+      // handle error here
+    }
+  };
 
-        }
-    }, [user])
-    useEffect(() => {
-        if (route.params?.image) setAvatar(route.params.image);
-    }, [route.params]);
+  const loading = useMessageAndErrorUser(navigation, dispatch, "profile");
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      setEmail(user.email);
+      setAvatar(user.picture);
+      setGoogleId(user.sub);
+      setPassword(googleId);
+    }
+  }, [user]);
+  useEffect(() => {
+    if (route.params?.image) setAvatar(route.params.image);
+  }, [route.params]);
 
-    return (
-        <>
-            <View style={defaultStyle}>
-                {/* Heading */}
-                <View style={{ marginBottom: 20 }}>
-                    <Text style={formHeading}>Sign Up</Text>
-                </View>
+  return (
+    <>
+      <View style={defaultStyle}>
+        {/* Heading */}
+        <View style={{ marginBottom: 20 }}>
+          <Text style={formHeading}>Sign Up</Text>
+        </View>
 
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    style={{
-                        padding: 20,
-                        elevation: 10,
-                        borderRadius: 10,
-                        backgroundColor: colors.color3,
-                    }}
-                >
-                    <View style={{ minHeight: 900 }}>
-                        <Avatar.Image
-                            style={{
-                                alignSelf: "center",
-                                backgroundColor: colors.color1,
-                            }}
-                            size={80}
-                            source={{
-                                uri: avatar ? avatar : defaultImg,
-                            }}
-                        />
-                        <TouchableOpacity onPress={() => navigation.navigate("camera")}>
-                            <Button textColor={colors.color1}>Change Photo</Button>
-                        </TouchableOpacity>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            padding: 20,
+          }}
+        >
+          <View style={{ minHeight: 900 }}>
+            <Avatar.Image
+              style={{
+                alignSelf: "center",
+                backgroundColor: colors.color1,
+              }}
+              size={80}
+              source={{
+                uri: avatar ? avatar : defaultImg,
+              }}
+            />
+            <TouchableOpacity onPress={() => navigation.navigate("camera")}>
+              <Button textColor={colors.color1}>Change Photo</Button>
+            </TouchableOpacity>
+            <Text style={{ marginLeft: 20 }}>Name</Text>
 
-                        <TextInput
-                            {...inputOptions}
-                            placeholder="Name"
-                            value={name}
-                            onChangeText={setName}
-                        />
+            <TextInput {...inputOptions} value={name} onChangeText={setName} />
+            <Text style={{ marginLeft: 20 }}>Email</Text>
 
-                        <TextInput
-                            {...inputOptions}
-                            placeholder="Email"
-                            keyboardType="email-address"
-                            value={email}
-                            onChangeText={setEmail}
-                        />
-                        {!googleId && <TextInput
-                            {...inputOptions}
-                            secureTextEntry={true}
-                            placeholder="Password"
-                            value={password}
-                            onChangeText={setPassword}
-                        />}
+            <TextInput
+              {...inputOptions}
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
+            />
+            <Text style={{ marginLeft: 20 }}>Password</Text>
 
+            {!googleId && (
+              <TextInput
+                {...inputOptions}
+                secureTextEntry={true}
+                value={password}
+                onChangeText={setPassword}
+              />
+            )}
+            <Text style={{ marginLeft: 20 }}>Address</Text>
 
-                        <TextInput
-                            {...inputOptions}
-                            placeholder="Address"
-                            value={address}
-                            onChangeText={setAddress}
-                        />
-                        <TextInput
-                            {...inputOptions}
-                            placeholder="City"
-                            value={city}
-                            onChangeText={setCity}
-                        />
-                        <TextInput
-                            {...inputOptions}
-                            placeholder="Country"
-                            value={country}
-                            onChangeText={setCountry}
-                        />
+            <TextInput
+              {...inputOptions}
+              value={address}
+              onChangeText={setAddress}
+            />
+            <Text style={{ marginLeft: 20 }}>City</Text>
 
-                        <TextInput
-                            {...inputOptions}
-                            placeholder="Pin Code"
-                            value={pinCode}
-                            onChangeText={setPinCode}
-                        />
+            <TextInput {...inputOptions} value={city} onChangeText={setCity} />
+            <Text style={{ marginLeft: 20 }}>Country</Text>
 
-                        <Button
-                            loading={loading}
-                            textColor={colors.color2}
-                            disabled={disableBtn}
-                            style={styles.btn}
-                            onPress={submitHandler}
-                        >
-                            Sign Up
-                        </Button>
+            <TextInput
+              {...inputOptions}
+              value={country}
+              onChangeText={setCountry}
+            />
+            <Text style={{ marginLeft: 20 }}>Pin Code</Text>
 
-                        <Text style={styles.or}>OR</Text>
+            <TextInput
+              {...inputOptions}
+              value={pinCode}
+              onChangeText={setPinCode}
+            />
+            <TouchableOpacity
+              activeOpacity={0.8}
+              loading={loading}
+              textColor={colors.color2}
+              disabled={disableBtn}
+              style={styles.btn}
+              onPress={submitHandler}
+            >
+              <Text style={{ color: "white", textAlign: "center" }}>
+                Sign In
+              </Text>
+            </TouchableOpacity>
 
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            onPress={() => {
-                                dispatch({type: "resetUser"})
-                                navigation.navigate("login")}}
-                        >
-                            <Text style={styles.link}>Log In</Text>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
-            </View>
+            <Text style={styles.or}>OR</Text>
 
-            <Footer activeRoute="profile" />
-        </>
-    );
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={{
+                backgroundColor: "white",
+                margin: 20,
+                padding: 10,
+                borderRadius: 5,
+                fontSize: 12,
+                borderWidth: 1,
+                borderColor: colors.color3,
+              }}
+              onPress={() => {
+                dispatch({ type: "resetUser" });
+                navigation.navigate("login");
+              }}
+            >
+              <Text style={{ color: "black", textAlign: "center" }}>
+                Log In
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+
+      <Footer activeRoute="profile" />
+    </>
+  );
 };
 
 export default SignUp;

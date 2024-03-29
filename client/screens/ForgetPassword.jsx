@@ -31,9 +31,10 @@ const ForgetPassword = ({ navigation }) => {
         </View>
 
         <View style={styles.container}>
+        <Text style={{ marginLeft: 20 }}>Email</Text>
+
           <TextInput
             {...inputOptions}
-            placeholder="Email"
             keyboardType="email-address"
             value={email}
             onChangeText={setEmail}
@@ -43,20 +44,43 @@ const ForgetPassword = ({ navigation }) => {
             loading={loading}
             textColor={colors.color2}
             disabled={email === ""}
-            style={styles.btn}
+            style={{
+                backgroundColor: "white",
+                margin: 20,
+
+                borderRadius: 5,
+                fontSize: 12,
+                backgroundColor: colors.color3
+              }}
             onPress={submitHandler}
           >
-            Send OTP
+            <Text style={{ color: "white", textAlign: "center" }}>
+                Send OTP
+              </Text>
           </Button>
 
           <Text style={styles.or}>OR</Text>
 
           <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate("login")}
-          >
-            <Text style={styles.link}>Log In</Text>
-          </TouchableOpacity>
+              activeOpacity={0.8}
+              style={{
+                backgroundColor: "white",
+                margin: 20,
+                padding: 10,
+                borderRadius: 5,
+                fontSize: 12,
+                borderWidth: 1,
+                borderColor: colors.color3,
+              }}
+              onPress={() => {
+                dispatch({ type: "resetUser" });
+                navigation.navigate("login");
+              }}
+            >
+              <Text style={{ color: "black", textAlign: "center" }}>
+                Log In
+              </Text>
+            </TouchableOpacity>
         </View>
       </View>
 

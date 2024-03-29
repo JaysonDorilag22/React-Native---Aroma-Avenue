@@ -34,6 +34,8 @@ const ConfirmOrder = () => {
       <View
         style={{
           paddingVertical: 20,
+      marginHorizontal:15,
+
           flex: 1,
         }}
       >
@@ -68,7 +70,7 @@ const ConfirmOrder = () => {
         <Button
           style={{
             backgroundColor: colors.color3,
-            borderRadius: 100,
+            borderRadius: 5,
             padding: 5,
             margin: 10,
           }}
@@ -90,10 +92,11 @@ const PriceTag = ({ heading, value }) => (
       justifyContent: "space-between",
       alignItems: "center",
       marginVertical: 5,
+      marginHorizontal:15
     }}
   >
     <Text style={{ fontWeight: "800" }}>{heading}</Text>
-    <Text>₹{value}</Text>
+    <Text>${value}</Text>
   </View>
 );
 

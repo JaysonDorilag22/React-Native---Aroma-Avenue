@@ -8,6 +8,7 @@ import WishlistItem from "../components/WishlistItem";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import Footer from "../components/Footer";
 
 
 const Wishlist = () => {
@@ -93,6 +94,8 @@ const Wishlist = () => {
             )}
             </ScrollView>
         </View>
+      <Footer activeRoute={"wishlist"} />
+
         </View>
     );
 };

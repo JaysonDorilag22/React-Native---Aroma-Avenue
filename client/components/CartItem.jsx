@@ -4,7 +4,6 @@ import { colors } from "../styles/styles";
 import { Avatar } from "react-native-paper";
 import { iconOptions } from "../screens/ProductDetails";
 
-
 const CartItem = ({
   name,
   amount,
@@ -19,6 +18,13 @@ const CartItem = ({
   addToWishlistHandler,
   navigate,
 }) => {
+  const avatarOptions = {
+    color: "black",
+    size: 30,
+    style: {
+      backgroundColor: "white",
+    },
+  };
   return (
     <View
       style={{
@@ -30,9 +36,10 @@ const CartItem = ({
       <View
         style={{
           width: "40%",
-          backgroundColor: index % 2 === 0 ? colors.color1 : colors.color3,
-          borderTopRightRadius: 100,
-          borderBottomRightRadius: 100,
+          backgroundColor: 'white',
+          borderTopRightRadius: 5,
+          borderBottomRightRadius: 5,
+          borderWidth: 1, borderColor: colors.color5
         }}
       >
         <Image
@@ -65,13 +72,13 @@ const CartItem = ({
             fontWeight: "900",
           }}
         >
-          ₹{amount}
+          ${amount}
         </Text>
         <TouchableOpacity
           style={styles.addToWishlistButton}
           onPress={() => addToWishlistHandler(id, name, price, imgSrc, stock)}
         >
-          <Text style={styles.addToWishlistText}>Add to Wishlist</Text>
+          <Avatar.Icon icon={"heart-outline"}  {...avatarOptions} />
         </TouchableOpacity>
       </View>
 
@@ -79,13 +86,16 @@ const CartItem = ({
         <TouchableOpacity
           onPress={() => decrementHandler(id, name, amount, imgSrc, stock, qty)}
         >
-          <Avatar.Icon icon={"minus"} size={20}
-                style={{
-                  borderRadius: 5,
-                  backgroundColor: colors.color5,
-                  height: 25,
-                  width: 25,
-                }} />
+          <Avatar.Icon
+            icon={"minus"}
+            size={20}
+            style={{
+              borderRadius: 5,
+              backgroundColor: colors.color5,
+              height: 25,
+              width: 25,
+            }}
+          />
         </TouchableOpacity>
 
         <Text style={styles.qtyText}>{qty}</Text>
@@ -93,13 +103,16 @@ const CartItem = ({
         <TouchableOpacity
           onPress={() => incrementhandler(id, name, amount, imgSrc, stock, qty)}
         >
-        <Avatar.Icon icon={"plus"} size={20}
-                style={{
-                  borderRadius: 5,
-                  backgroundColor: colors.color5,
-                  height: 25,
-                  width: 25,
-                }} />
+          <Avatar.Icon
+            icon={"plus"}
+            size={20}
+            style={{
+              borderRadius: 5,
+              backgroundColor: colors.color5,
+              height: 25,
+              width: 25,
+            }}
+          />
         </TouchableOpacity>
       </View>
     </View>

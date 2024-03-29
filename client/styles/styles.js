@@ -19,7 +19,7 @@ export const defaultStyle = StyleSheet.create({
 });
 
 export const inputStyling = StyleSheet.create({
-  height: 50,
+  height: 40,
   backgroundColor: colors.color2,
   marginVertical: 10,
   marginHorizontal: 20,
@@ -29,10 +29,7 @@ export const formHeading = {
   fontSize: 25,
   fontWeight: "500",
   textAlign: "center",
-  backgroundColor: colors.color3,
-  color: colors.color2,
-  padding: 5,
-  borderRadius: 5,
+  color: colors.color3,
 };
 
 export const inputOptions = {
@@ -44,43 +41,55 @@ export const inputOptions = {
 export const formStyles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: colors.color3,
-    borderRadius: 10,
+
+    borderRadius: 5,
     justifyContent: "center",
-    elevation: 10,
+
   },
 
   forget: {
-    color: colors.color2,
+    color: colors.color3,
     marginHorizontal: 20,
     marginVertical: 10,
     alignSelf: "flex-end",
-    fontWeight: "100",
+    fontWeight: "500",
+    fontSize: 12,
+
+
   },
 
   btn: {
-    backgroundColor: colors.color1,
+    backgroundColor: colors.color3,
     margin: 20,
-    padding: 6,
+    padding: 10,
+    borderRadius: 5,
+    fontSize: 12,
+
   },
 
   or: {
     alignSelf: "center",
-    fontSize: 20,
-    fontWeight: "100",
-    color: colors.color2,
+    fontSize: 12,
+    color: colors.color3,
   },
 
   link: {
-    alignSelf: "center",
-    color: colors.color2,
-    fontSize: 18,
-    textTransform: "uppercase",
-    marginVertical: 10,
+    color: colors.color3,
     marginHorizontal: 20,
+    marginVertical: 10,
+    alignSelf: "flex-start",
+    fontWeight: "500",
+    fontSize: 12,
+
+
+  },
+  linkContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: -10,
+
   },
 });
 
 export const defaultImg =
-  "https://p.kindpng.com/picc/s/451-4517876_default-profile-hd-png-download.png";
+  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";

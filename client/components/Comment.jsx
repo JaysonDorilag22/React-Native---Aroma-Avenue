@@ -63,17 +63,19 @@ const Comment = () => {
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
+      <Rating
+          showRating
+          startingValue={rating}
+          size={15}
+          onFinishRating={(value) => setRating(value)}
+        />
         <TextInput
           style={styles.input}
           placeholder="Add a comment..."
           value={text}
           onChangeText={setNewCommentText}
         />
-        <Rating
-          showRating
-          startingValue={rating}
-          onFinishRating={(value) => setRating(value)}
-        />
+        
         <Button
           title={"Add Comment"}
           onPress={handleAddComment}
@@ -89,6 +91,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingBottom: 50,
+    backgroundColor:"white"
   },
   formContainer: {
     flexDirection: "column",

@@ -1,15 +1,17 @@
-import { View, TouchableOpacity } from "react-native";
 import React from "react";
+import { View, TouchableOpacity, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { colors } from "../styles/styles";
-import { Avatar } from "react-native-paper";
-import { useSelector } from "react-redux"
-import { FontAwesome } from 'react-native-vector-icons';
+import { Avatar, Badge } from "react-native-paper";
+import { useSelector } from "react-redux";
+import { FontAwesome } from "react-native-vector-icons";
+import { colors } from "../styles/styles"; // assuming you have defined your colors in this file
 
 const Footer = ({ activeRoute = "home" }) => {
   const navigate = useNavigation();
-  
-  const { loading, isAuthenticated } = useSelector((state) => state.user)
+
+  const { loading, isAuthenticated } = useSelector((state) => state.user);
+  const { cartItems } = useSelector((state) => state.cart);
+  const { wishlistItems } = useSelector((state) => state.wishlist);
 
   const navigationHandler = (key) => {
     switch (key) {
@@ -20,40 +22,115 @@ const Footer = ({ activeRoute = "home" }) => {
         navigate.navigate("cart");
         break;
       case 2:
-        // if (isAuthenticated) navigate.navigate("profile");
-        // else navigate.navigate("login");
         navigate.navigate("wishlist");
         break;
+      case 3:
+        if (isAuthenticated) {
+          navigate.navigate("profile");
+        } else {
+          navigate.navigate("login"); // Redirect to login if not authenticated
+        }
+        break;
       default:
-        navigate.navigate("Home");
+        navigate.navigate("home");
         break;
     }
   };
 
   const avatarOptions = {
-    color: colors.color2,
-    size: 40,
+    color: "black",
+    size: 35,
     style: {
-      backgroundColor: colors.color1,
+      backgroundColor: "white",
     },
   };
+
+  const textOptions = {
+    textAlign: "center",
+    fontSize: 10,
+    color: colors.color1,
+    marginTop: -8,
+  };
+
   return (
-    <View style={{ backgroundColor: colors.color1, width: "100%"}}>
-  <View style={{ flexDirection: "row", justifyContent: "space-evenly", alignItems: "center" }}>
-    <TouchableOpacity activeOpacity={0.8} onPress={() => navigationHandler(1)}>
-      <Avatar.Icon {...avatarOptions} icon={activeRoute === "cart" ? "shopping" : "shopping-outline"} />
-    </TouchableOpacity>
+    <View
+      style={{
+        width: "100%",
+        borderWidth: 1,
+        borderColor: colors.color5,
+        backgroundColor: "white",
+      }}
+    >
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+        }}
+      >
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigationHandler(1)}
+        >
+          <Badge
+            visible={cartItems.length > 0}
+            size={20}
+            style={{ position: "absolute", top: -4, right: -4, zIndex: 1 }}
+          >
+            {cartItems.length}
+          </Badge>
+          <Avatar.Icon
+            {...avatarOptions}
+            icon={activeRoute === "cart" ? "cart" : "cart-outline"}
+          />
+          <Text style={textOptions}>Cart</Text>
+        </TouchableOpacity>
 
-    <TouchableOpacity activeOpacity={0.8} onPress={() => navigationHandler(2)}>
-      <Avatar.Icon {...avatarOptions} icon={activeRoute === "wishlist" ? "heart" : "heart-outline"} />
-    </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigationHandler(2)}
+        >
+          <Badge
+            visible={wishlistItems.length > 0}
+            size={20}
+            style={{ position: "absolute", top: -4, right: -4, zIndex: 1 }}
+          >
+            {wishlistItems.length}
+          </Badge>
+          <Avatar.Icon
+            {...avatarOptions}
+            icon={activeRoute === "wishlist" ? "heart" : "heart-outline"}
+          />
+          <Text style={textOptions}>Wishlist</Text>
+        </TouchableOpacity>
 
-    <TouchableOpacity activeOpacity={0.8} onPress={() => navigationHandler(0)}>
-      <Avatar.Icon {...avatarOptions} icon={activeRoute === "home" ? "home" : "home-outline"} />
-    </TouchableOpacity>
-  </View>
-</View>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigationHandler(0)}
+        >
+          <Avatar.Icon
+            {...avatarOptions}
+            icon={activeRoute === "home" ? "home" : "home-outline"}
+          />
+          <Text style={textOptions}>Home</Text>
+        </TouchableOpacity>
 
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigationHandler(3)}
+        >
+          <Avatar.Icon
+            {...avatarOptions}
+            icon={
+              activeRoute === "profile"
+                ? "account-circle"
+                : "account-circle-outline"
+            }
+          />
+          <Text style={textOptions}>Profile</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 

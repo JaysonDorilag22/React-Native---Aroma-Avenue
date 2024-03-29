@@ -8,6 +8,7 @@ import CartItem from "../components/CartItem";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import Footer from "../components/Footer";
 
 const Cart = () => {
   const navigate = useNavigation();
@@ -131,7 +132,7 @@ const Cart = () => {
       >
         <Text>{cartItems.length} Items</Text>
         <Text>
-          ₹
+          $
           {cartItems.reduce(
             (prev, curr) => prev + curr.quantity * curr.price,
             0
@@ -147,7 +148,7 @@ const Cart = () => {
         <Button
           style={{
             backgroundColor: colors.color3,
-            borderRadius: 100,
+            borderRadius: 5,
             padding: 5,
             margin: 30,
           }}
@@ -157,6 +158,8 @@ const Cart = () => {
           Checkout
         </Button>
       </TouchableOpacity>
+      <Footer activeRoute={"cart"} />
+
     </View>
   );
 };

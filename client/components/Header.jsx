@@ -10,6 +10,14 @@ const Header = ({ back, emptyCart = false, emptyWishlist = false }) => {
   const dispatch = useDispatch();
   const route = useRoute();
 
+  const avatarOptions = {
+    color: "black",
+    size: 40,
+    style: {
+      backgroundColor: "white",
+    },
+  };
+
   const emptyCartHandler = () => {
     dispatch({
       type: "clearCart",
@@ -37,7 +45,7 @@ const Header = ({ back, emptyCart = false, emptyWishlist = false }) => {
       navigate.navigate("wishlist");
     }
   };
-  
+
 
   return (
     <>
@@ -46,19 +54,18 @@ const Header = ({ back, emptyCart = false, emptyWishlist = false }) => {
           style={{
             position: "absolute",
             left: 20,
-            top: 10,
+            top: 5,
             zIndex: 10,
           }}
           onPress={() => navigate.goBack()}
         >
           <Avatar.Icon
-            style={{
-              backgroundColor: colors.color4,
-            }}
+            {...avatarOptions}
             icon={"arrow-left"}
             color={
-              route.name === "productdetails" ? colors.color2 : colors.color3
+              route.name === "productdetails" ? 'black' : colors.color3
             }
+            
           />
         </TouchableOpacity>
       )}
@@ -67,18 +74,16 @@ const Header = ({ back, emptyCart = false, emptyWishlist = false }) => {
         style={{
           position: "absolute",
           right: 20,
-          top: 10,
+          top: 5,
           zIndex: 10,
         }}
         onPress={handleCartPress}
       >
         <Avatar.Icon
-          style={{
-            backgroundColor: colors.color4,
-          }}
+          {...avatarOptions}
           icon={emptyCart ? "delete-outline" : "cart-outline"}
           color={
-            route.name === "productdetails" ? colors.color2 : colors.color3
+            route.name === "productdetails" ? 'black' : colors.color3
           }
         />
       </TouchableOpacity>
@@ -87,7 +92,7 @@ const Header = ({ back, emptyCart = false, emptyWishlist = false }) => {
         style={{
           position: "absolute",
           right: emptyWishlist ? 70 : 70,
-          top: 10,
+          top: 5,
           zIndex: 10,
         }}
         onPress={handleWishlistPress}
@@ -96,13 +101,13 @@ const Header = ({ back, emptyCart = false, emptyWishlist = false }) => {
           <Avatar.Icon
             icon="delete-outline"
             color={colors.color3}
-            style={{ backgroundColor: colors.color4 }}
+            {...avatarOptions}
           />
         ) : (
           <Avatar.Icon
             icon="heart-outline"
             color={colors.color3}
-            style={{ backgroundColor: colors.color4 }}
+            {...avatarOptions}
           />
         )}
       </TouchableOpacity>
