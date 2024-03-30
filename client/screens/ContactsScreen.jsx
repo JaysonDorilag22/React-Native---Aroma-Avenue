@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContactRequest } from "../redux/actions/chatActions";
 import ContactRequest from "../components/ContactRequest";
+import Header from "../components/Header";
 
 const ContactsScreen = ({ navigation }) => {
   
@@ -31,6 +32,8 @@ const ContactsScreen = ({ navigation }) => {
   return (
     <>
       <View style={defaultStyle}>
+      <Header back={true} />
+
         <View style={{ marginBottom: 20 }}>
             <Text style={formHeading}>Requests</Text>
         </View>

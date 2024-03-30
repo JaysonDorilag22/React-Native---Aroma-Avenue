@@ -5,7 +5,7 @@ const initialState = {
   loading: false,
   error: null,
   message: null, // Adding message field for success message
-  averageRating: null,
+  averageRating: [],
 };
 
 export const commentReducer = createReducer(initialState, (builder) => {

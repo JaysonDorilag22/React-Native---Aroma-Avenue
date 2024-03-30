@@ -6,6 +6,7 @@ import {
     defaultStyle,
     formHeading,
 } from "../styles/styles";
+
 import { Avatar, Button } from "react-native-paper";
 import ButtonBox from "../components/ButtonBox";
 import Footer from "../components/Footer";
@@ -21,6 +22,7 @@ import mime from "mime";
 import { updatePic } from "../redux/actions/otherActions";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { CLIENT_ID_ANDROID, CLIENT_ID_IOS, CLIENT_ID_WEB } from "@env";
+import Header from "../components/Header";
 const Profile = ({ navigation, route }) => {
     const { user } = useSelector((state) => state.user);
     const [avatar, setAvatar] = useState(user?.avatar ? user.avatar.url : defaultImg);
@@ -125,6 +127,8 @@ const Profile = ({ navigation, route }) => {
         <>
             <View style={defaultStyle}>
                 {/* Heading */}
+      <Header back={true} />
+
                 <View style={{ marginBottom: 20 }}>
                     <Text style={formHeading}>Profile</Text>
                 </View>

@@ -304,7 +304,7 @@ const ChatMessagesScreen = () => {
               backgroundColor: "#007bff",
               paddingVertical: 8,
               paddingHorizontal: 12,
-              borderRadius: 20,
+              borderRadius: 5,
             }}
           >
             <Text style={{ color: "white", fontWeight: "bold" }}>Send</Text>

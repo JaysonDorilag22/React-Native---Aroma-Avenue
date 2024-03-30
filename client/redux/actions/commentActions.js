@@ -67,15 +67,23 @@ export const addComment = (text, userId, productId, rating) => {
     };
   };
   
-  export const getProductRatings = (productId) => {
+  export const getProductRatings = (id) => {
     return async (dispatch) => {
       try {
-        const response = await axios.get(`${server}/comment/products/${productId}/ratings`);
+        // Making a GET request to fetch product ratings
+        const response = await axios.get(`${server}/comment/products/${id}/ratings`);
+        
+        // Dispatching an action with the fetched data
         dispatch({
           type: "getProductRatingsSuccess",
-          payload: response.data.averageRating,
+          payload: response.data,
         });
+        
+        // Logging the data to the console
+        console.log(response.data.averageRating);
+        
       } catch (error) {
+        // Handling errors if the request fails
         console.error("Error fetching product ratings:", error);
         dispatch({
           type: "getProductRatingsFail",
@@ -83,4 +91,6 @@ export const addComment = (text, userId, productId, rating) => {
         });
       }
     };
-  };
+};
+
+  

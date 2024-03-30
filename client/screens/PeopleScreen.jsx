@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useLayoutEffect, useContext, useEffect, useState } from "react";
+import Header from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import People from "../components/People";
 import { useIsFocused } from "@react-navigation/native";
@@ -32,11 +33,13 @@ const PeopleScreen = ({ navigation }) => {
   return (
     <>
       <View style={defaultStyle}> 
+      <Header back={true} />
+
         <View style={{ marginBottom: 20 }}>
             <Text style={formHeading}>People</Text>
         </View>
 
-        <ScrollView showVerticalScrollIndicator={false} style={{ marginBottom: 60 }}>
+        <ScrollView showVerticalScrollIndicator={false} style={{ padding: 10 }}>
           {users.map((item, index) => (
             <People key={index} item={item}/>
           ))}

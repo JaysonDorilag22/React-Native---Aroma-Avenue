@@ -42,20 +42,21 @@ const ProductDetails = ({ route: { params } }) => {
   const average = useSelector((state) => state.comment.averageRating); // Fetch comments from Redux store
   const loading = useSelector((state) => state.comment.loading); // Fetch loading state from Redux store
 
-  console.log("current user:", user);
+  // console.log("current user:", user);
   const {
     product: { name, price, stock, description, images },
   } = useSelector((state) => state.product);
 
   const [quantity, setQuantity] = useState(1);
   const isOutOfStock = stock === 0;
+  const roundedAverage = average.averageRating.toFixed(1);
 
   useEffect(() => {
     dispatch(getAllComments(params.id)); // Fetch comments when component mounts
     dispatch(getProductDetails(params.id));
     dispatch(getProductRatings(params.id));
   }, [dispatch, params.id, isFocused]);
-
+console.log(params.id)
   const incrementQty = () => {
     if (stock <= quantity) {
       return Toast.show({
@@ -140,7 +141,7 @@ const ProductDetails = ({ route: { params } }) => {
   };
   return (
     <ScrollView
-      style={{ ...defaultStyle, padding: 0, backgroundColor: colors.color6}}
+      style={{ ...defaultStyle, padding: 0}}
     >
       <Header back={true} />
       <Carousel
@@ -183,7 +184,7 @@ const ProductDetails = ({ route: { params } }) => {
               style={{ backgroundColor: "white", marginLeft: -10 }}
             />
           </View>
-          <Text style={{ marginLeft: 5 }}>{average}</Text>
+          <Text style={{ marginLeft: 5 }}>{roundedAverage}</Text>
         </View>
         <Text
           style={{ lineHeight: 20, marginVertical: 15, color: "grey" }}

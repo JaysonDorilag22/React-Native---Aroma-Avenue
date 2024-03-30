@@ -13,6 +13,7 @@ import { fetchAcceptedContacts } from "../redux/actions/chatActions";
 import UserChat from "../components/UserChat";
 import { fetchAllMessages } from "../redux/actions/chatActions";
 import { loadUser } from "../redux/actions/userActions";
+import Header from "../components/Header";
 const ChatsScreen = () => {
 
   const { loading, contacts } = useSelector((state) => state.chat)
@@ -103,6 +104,8 @@ const ChatsScreen = () => {
 
     <>
       <View style={defaultStyle}>
+      <Header back={true} />
+
         <View style={{ marginBottom: 20 }}>
           <Text style={formHeading}>Messages</Text>
         </View>

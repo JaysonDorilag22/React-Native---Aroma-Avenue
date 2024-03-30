@@ -69,7 +69,7 @@ const People = ({ item }) => {
         <Pressable
           onPress={handleAddContact}
           style={{
-            backgroundColor: "#567189",
+            backgroundColor: "black",
             padding: 10,
             borderRadius: 6,
             width: 105,
