@@ -131,11 +131,11 @@ const Payment = ({ navigation, route }) => {
         >
           <View style={styles.radioStyle}>
             <Text style={styles.radioStyleText}>Cash On Delivery</Text>
-            <RadioButton color={colors.color1} value={"COD"} />
+            <RadioButton color={colors.color3} value={"COD"} />
           </View>
           <View style={styles.radioStyle}>
             <Text style={styles.radioStyleText}>ONLINE</Text>
-            <RadioButton color={colors.color1} value={"ONLINE"} />
+            <RadioButton color={colors.color3} value={"ONLINE"} />
           </View>
         </RadioButton.Group>
       </View>
@@ -154,7 +154,7 @@ const Payment = ({ navigation, route }) => {
           loading={loading}
           disabled={loading}
           style={styles.btn}
-          textColor={colors.color2}
+          textColor={"black"}
           icon={
             paymentMethod === "COD" ? "check-circle" : "circle-multiple-outline"
           }
@@ -168,9 +168,9 @@ const Payment = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.color3,
+    // backgroundColor: colors.color3,
     padding: 30,
-    borderRadius: 10,
+    borderRadius: 5,
     marginVertical: 20,
     flex: 1,
     justifyContent: "center",
@@ -186,11 +186,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 18,
     textTransform: "uppercase",
-    color: colors.color2,
+    color: colors.color3,
   },
   btn: {
-    backgroundColor: colors.color3,
-    borderRadius: 100,
+    backgroundColor: "white",
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "black",
     margin: 10,
     padding: 5,
   },

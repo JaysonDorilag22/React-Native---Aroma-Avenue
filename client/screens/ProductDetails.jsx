@@ -140,7 +140,7 @@ const ProductDetails = ({ route: { params } }) => {
   };
   return (
     <ScrollView
-      style={{ ...defaultStyle, padding: 0, backgroundColor: colors.color1 }}
+      style={{ ...defaultStyle, padding: 0, backgroundColor: colors.color6}}
     >
       <Header back={true} />
       <Carousel
@@ -160,24 +160,33 @@ const ProductDetails = ({ route: { params } }) => {
           borderTopRightRadius: 5,
         }}
       >
-        {/* Rating */}
-        <AirbnbRating
-          count={5}
-          reviews={["Terrible", "Okay", "Average", "Excellent", "Amazing"]}
-          defaultRating={average}
-          size={25}
-          style={{
-          flex: 1,
-          fontSize: 18,
-        }}
-        />
-        {/* Details */}
         <Text numberOfLines={2} style={{ fontSize: 25 }}>
           {name}
         </Text>
         <Text style={{ fontSize: 18, fontWeight: "900" }}>${price}</Text>
+        <View
+          style={{
+            backgroundColor: colors.color2,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              borderRadius: 5,
+            }}
+          >
+            <Avatar.Icon
+              icon="star"
+              size={30}
+              color="#FFD700"
+              style={{ backgroundColor: "white", marginLeft: -10 }}
+            />
+          </View>
+          <Text style={{ marginLeft: 5 }}>{average}</Text>
+        </View>
         <Text
-          style={{ letterSpacing: 1, lineHeight: 20, marginVertical: 15 }}
+          style={{ lineHeight: 20, marginVertical: 15, color: "grey" }}
           numberOfLines={8}
         >
           {description}
@@ -267,11 +276,10 @@ const ProductDetails = ({ route: { params } }) => {
                 style={{
                   borderRadius: 5,
                   backgroundColor: "white",
-                  marginTop:4,
-                  borderWidth:1,
-                  borderColor: colors.color1
+                  marginTop: 4,
+                  borderWidth: 1,
+                  borderColor: colors.color1,
                 }}
-                
                 textColor={"black"}
               >
                 Add to Wishlist
@@ -291,12 +299,19 @@ const ProductDetails = ({ route: { params } }) => {
         >
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>Comments</Text>
         </View>
+        <View
+          style={{
+            borderBottomWidth: 1,
+            borderBottomColor: "gray",
+            marginBottom: 10,
+          }}
+        />
 
         <FlatList
           data={comments}
           renderItem={({ item }) => (
             <View style={{ marginBottom: 10 }}>
-              <Text style={{ fontWeight: "bold" }}>{item.user}</Text>
+              {/* <Text style={{ fontWeight: "bold" }}>{item.user}</Text> */}
               <Text>Rating: {item.rating}</Text>
               <Text>Comment: {item.text}</Text>
               {user &&
@@ -336,7 +351,7 @@ const CarouselCardItem = ({ item, index }) => (
 
 const style = StyleSheet.create({
   container: {
-    backgroundColor: colors.color1,
+    backgroundColor: colors.color6,
     width: ITEM_WIDTH,
     paddingVertical: 40,
     height: 380,
