@@ -8,34 +8,23 @@ import {
   Pressable,
   Image,
 } from "react-native";
-import {
-  colors,
-  defaultImg,
-  defaultStyle,
-  formHeading,
-} from "../styles/styles";
-import React, { useState, useContext, useLayoutEffect, useEffect, useRef } from "react";
+import React, { useState,  useEffect, useRef } from "react";
 import { Feather } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import EmojiSelector from "react-native-emoji-selector";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllMessages, fetchMessages, fetchRecepientData, sendMessage } from "../redux/actions/chatActions";
 
 const ChatMessagesScreen = () => {
   const { user } = useSelector((state) => state.user);
-  const { recepientData } = useSelector((state) => state.chat)
+  // const { recepientData } = useSelector((state) => state.chat)
   const { messages, loading } = useSelector((state) => state.chat)
   const userId = user._id
 
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
   const [selectedMessages, setSelectedMessages] = useState([]);
-  const [currentMessages, setMessages] = useState([]);
   const [selectedImage, setSelectedImage] = useState("");
   const route = useRoute();
   const { recepientId } = route.params;
@@ -73,53 +62,28 @@ const ChatMessagesScreen = () => {
     setSelectedImage("");
     dispatch(fetchRecepientData(recepientId));
     dispatch(fetchMessages(userId, recepientId));
-    dispatch(fetchAllMessages(userId))
+    // dispatch(fetchAllMessages(userId))
   };
-
-  //   try {
-  //     const response = await fetch("http://192.168.100.169:8000/deleteMessages", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ messages: messageIds }),
-  //     });
-
-  //     if (response.ok) {
-  //       setSelectedMessages((prevSelectedMessages) =>
-  //       prevSelectedMessages.filter((id) => !messageIds.includes(id))
-  //     );
-
-  //       fetchMessages();
-  //     } else {
-  //       console.log("error deleting messages", response.status);
-  //     }
-  //   } catch (error) {
-  //     console.log("error deleting messages", error);
-  //   }
-  // };
 
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
     return new Date(time).toLocaleString("en-US", options);
   };
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  // const pickImage = async () => {
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
+  //     allowsEditing: true,
+  //     aspect: [4, 3],
+  //     quality: 1,
+  //   });
 
-    console.log(result);
-    if (!result.canceled) {
-      handleSend("image", result.uri);
-    }
-  };
+  //   if (!result.canceled) {
+  //     handleSend("image", result.uri);
+  //   }
+  // };
 
   const handleSelectMessage = (message) => {
-    //check if the message is already selected
     const isSelected = selectedMessages.includes(message._id);
 
     if (isSelected) {
@@ -194,12 +158,14 @@ const ChatMessagesScreen = () => {
               );
             }
 
-            if (item.messageType === "image") {
+            {/* if (item.messageType === "image") {
               const baseUrl =
-                "/Users/jonas/Documents/Programming Language - Design and Implementation/nativechat/build/chat-app/api/files";
-              const imageUrl = item.imageUrl;
+                "/Users/jonas/Documents/Programming Language - Design and Implementation/nativechat/build/chat-app/api/files"; */}
+              {/* const imageUrl = item.imageUrl;
               const filename = imageUrl.split("/").pop();
-              const source = { uri: baseUrl + filename };
+              const source = { uri: baseUrl + filename }; */}
+
+
               return (
                 <Pressable
                   key={index}
@@ -245,7 +211,7 @@ const ChatMessagesScreen = () => {
                 </Pressable>
               );
             }
-          })}
+          )}
         </ScrollView>
 
         <View
@@ -261,7 +227,7 @@ const ChatMessagesScreen = () => {
         >
           <Entypo
             onPress={handleEmojiPress}
-            style={{ marginRight: 5}}
+            style={{ marginRight: 10}}
             name="emoji-happy"
             size={24}
             color="gray"
@@ -275,7 +241,7 @@ const ChatMessagesScreen = () => {
               height: 40,
               borderWidth: 1,
               borderColor: "#dddddd",
-              borderRadius: 20,
+              borderRadius: 5,
               paddingHorizontal: 10,
             }}
             placeholder="Type Your message..."
@@ -289,13 +255,13 @@ const ChatMessagesScreen = () => {
               marginHorizontal: 8,
             }}
           >
-            <Entypo 
-              // onPress={pickImage} 
+            {/* <Entypo 
+              onPress={pickImage} 
               name="camera" 
               size={24} 
-              color="gray" />
+              color="gray" /> */}
 
-            <Feather name="mic" size={24} color="gray" />
+            {/* <Feather name="mic" size={24} color="gray" /> */}
           </View>
 
           <Pressable
@@ -320,11 +286,9 @@ const ChatMessagesScreen = () => {
           />
         )}
       </KeyboardAvoidingView>
-      {/* <Footer /> */}
     </>
   );
 };
 
 export default ChatMessagesScreen;
 
-const styles = StyleSheet.create({});
