@@ -27,7 +27,7 @@ const Comment = () => {
 
   const handlePostComment = () => {
     const formData = new FormData();
-    formData.append("userId", user._id); // Assuming user ID is available
+    formData.append("userId", user._id); 
     formData.append("productId", product._id); // Assuming product ID is available
     formData.append("text", commentText);
     formData.append("rating", starCount); // Append the star rating to the form data

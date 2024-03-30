@@ -152,7 +152,7 @@ const Profile = ({ navigation, route }) => {
                                 <Button
                                     disabled={loadingPic}
                                     loading={loadingPic}
-                                    textColor={colors.color1}
+                                    textColor={"black"}
                                 >
                                     Change Photo
                                 </Button>
@@ -162,7 +162,7 @@ const Profile = ({ navigation, route }) => {
                             <Text
                                 style={{
                                     fontWeight: "300",
-                                    color: colors.color2,
+                                    color: "grey",
                                 }}
                             >
                                 {user?.email}
@@ -185,7 +185,7 @@ const Profile = ({ navigation, route }) => {
                                 {user?.role === "admin" && (
                                     <ButtonBox
                                         handler={navigateHandler}
-                                        icon={"view-dashboard"}
+                                        icon={"view-dashboard-outline"}
                                         text={"Admin"}
                                         reverse={true}
                                     />
@@ -193,12 +193,12 @@ const Profile = ({ navigation, route }) => {
                                 <ButtonBox
                                     handler={navigateHandler}
                                     text={"Password"}
-                                    icon={"pencil"}
+                                    icon={"pencil-outline"}
                                 />
                                 <ButtonBox
                                     handler={navigateHandler}
                                     text={"Profile"}
-                                    icon={"pencil"}
+                                    icon={"account-circle-outline"}
                                 />
                             </View>
 
@@ -213,17 +213,17 @@ const Profile = ({ navigation, route }) => {
                                     <ButtonBox
                                         handler={navigateHandler}
                                         text={"People"}
-                                        icon={"human"}
+                                        icon={"account-outline"}
                                     />
                                     <ButtonBox
                                         handler={navigateHandler}
                                         text={"Message"}
-                                        icon={"message"}
+                                        icon={"message-outline"}
                                     />
                                     <ButtonBox
                                         handler={navigateHandler}
                                         text={"Contacts"}
-                                        icon={"contacts"}
+                                        icon={"contacts-outline"}
                                     />
                                 </View>
                             </View>
@@ -241,17 +241,18 @@ const Profile = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     container: {
-        elevation: 7,
-        backgroundColor: colors.color3,
+        backgroundColor: "white",
         padding: 30,
         borderRadius: 10,
         alignItems: "center",
+        borderWidth: 1,
+        borderColor: colors.color1
     },
     name: {
         fontSize: 20,
         fontWeight: "500",
         marginTop: 10,
-        color: colors.color2,
+        color: "black",
     },
 });
 

@@ -23,7 +23,7 @@ const Orders = () => {
             <Header back={true} />
 
             {/* Heading */}
-            <View style={{ marginBottom: 20, paddingTop: 70 }}>
+            <View style={{ marginBottom: 20, paddingTop:30 }}>
                 <Text style={formHeading}>Orders</Text>
             </View>
 

@@ -22,17 +22,18 @@ const OrderItem = ({
     return orderItems.map((item) => item.product);
   };
 
+  console.log(getProductIds._id)
   return (
     <View
       style={{
         ...styles.container,
-        backgroundColor: i % 2 === 0 ? colors.color2 : colors.color3,
+        backgroundColor: "white",
       }}
     >
       <Text
         style={{
           ...styles.text,
-          backgroundColor: i % 2 === 0 ? colors.color3 : colors.color1,
+          backgroundColor: "white",
         }}
       >
         ID - #{id}
@@ -44,11 +45,11 @@ const OrderItem = ({
       <TextBox title={"Status"} value={status} i={i} />
       <TextBox title={"Payment Method"} value={paymentMethod} i={i} />
 
-      {!admin && status === "Delivered" && (
+      {/* {!admin && status === "Delivered" && (
         <Button
           textColor={colors.color2}
           style={{
-            backgroundColor: colors.color1,
+            backgroundColor: "black",
             margin: 20,
             padding: 6,
           }}
@@ -56,7 +57,7 @@ const OrderItem = ({
         >
           Write a Review
         </Button>
-      )}
+      )} */}
 
       {admin && (
         <Button
@@ -84,24 +85,27 @@ const TextBox = ({ title, value, i }) => (
   <Text
     style={{
       marginVertical: 6,
-      color: i % 2 === 0 ? colors.color3 : colors.color2,
+      color: "black",  // Set text color to black
+      backgroundColor: "white",  // Set background color to white
     }}
   >
     <Text style={{ fontWeight: "900" }}>{title} - </Text>
-    {title === "Price" ? "₹" : ""}
+    {title === "Price" ? "$" : ""}
     {value}
   </Text>
 );
+
 
 const styles = StyleSheet.create({
   container: {
     padding: 20,
     borderRadius: 10,
     marginVertical: 10,
-    elevation: 5,
+    borderWidth: 1,
+    borderColor: "grey"
   },
   text: {
-    color: colors.color2,
+    color: "black",
     fontSize: 16,
     fontWeight: "900",
     marginHorizontal: -20,
