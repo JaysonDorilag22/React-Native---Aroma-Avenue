@@ -32,28 +32,36 @@ const Verify = ({ navigation }) => {
         </View>
 
         <View style={styles.container}>
+          <Text style={{ marginLeft: 20 }}>OTP</Text>
           <TextInput
             {...inputOptions}
-            placeholder="OTP"
             secureTextEntry={true}
             keyboardType="number-pad"
             value={otp}
             onChangeText={setOtp}
           />
-
+          <Text style={{ marginLeft: 20 }}>New Password</Text>
           <TextInput
             {...inputOptions}
-            placeholder="New Password"
             secureTextEntry={true}
             value={password}
             onChangeText={setPassword}
           />
 
           <Button
-            loading={loading}
-            textColor={colors.color2}
+            textColor={otp !== "" || password !== "" ? "white" : colors.color3}
+            activeOpacity={0.8}
+            style={{
+              backgroundColor:
+                otp !== "" && password !== "" ? colors.color3 : "white",
+              margin: 20,
+              padding: 10,
+              borderRadius: 5,
+              fontSize: 12,
+              borderWidth: 1,
+              borderColor: colors.color3,
+            }}
             disabled={otp === "" || password === ""}
-            style={styles.btn}
             onPress={submitHandler}
           >
             Reset
@@ -63,9 +71,21 @@ const Verify = ({ navigation }) => {
 
           <TouchableOpacity
             activeOpacity={0.8}
+            style={{
+              backgroundColor: "white",
+              margin: 20,
+              padding: 10,
+              borderRadius: 5,
+              fontSize: 12,
+              borderWidth: 1,
+              borderColor: colors.color3,
+            }}
+            loading={loading}
             onPress={() => navigation.navigate("forgetpassword")}
           >
-            <Text style={styles.link}>Resend OTP</Text>
+            <Button loading={loading} textColor={colors.color3}>
+              Resend OTP
+            </Button>
           </TouchableOpacity>
         </View>
       </View>
