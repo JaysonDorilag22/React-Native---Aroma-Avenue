@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -5,7 +6,11 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import { Avatar, Button, TextInput } from "react-native-paper";
+import { useIsFocused } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import mime from "mime";
+import { addCategory, deleteCategory } from "../../redux/actions/otherActions";
 import {
   colors,
   defaultStyle,
@@ -13,12 +18,7 @@ import {
   inputOptions,
 } from "../../styles/styles";
 import Header from "../../components/Header";
-import { Avatar, Button, TextInput } from "react-native-paper";
 import { useMessageAndErrorOther, useSetCategories } from "../../utils/hooks";
-import { useIsFocused } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
-import mime from "mime";
-import { addCategory, deleteCategory } from "../../redux/actions/otherActions";
 
 const Categories = ({ navigation, route, navigate }) => {
   const [category, setCategory] = useState("");
@@ -32,11 +32,13 @@ const Categories = ({ navigation, route, navigate }) => {
 
   const loading = useMessageAndErrorOther(dispatch, navigation, "adminpanel");
 
-  const deleteHandler = (id) => {
-    dispatch(deleteCategory(id));
+  const deleteHandler = async (id) => {
+    await dispatch(deleteCategory(id));
+    // After deleting category, refetch the categories
+    useSetCategories(setCategories, isFocused);
   };
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     const myForm = new FormData();
     myForm.append("category", category);
     myForm.append("file", {
@@ -45,9 +47,9 @@ const Categories = ({ navigation, route, navigate }) => {
       name: image.split("/").pop(),
     });
 
-    // console.log("FormData:", myForm);
-
-    dispatch(addCategory(myForm));
+    await dispatch(addCategory(myForm));
+    // After adding category, refetch the categories
+    useSetCategories(setCategories, isFocused);
   };
 
   useEffect(() => {
@@ -161,9 +163,8 @@ const CategoryCard = ({ name, id, deleteHandler, navigate, navigation }) => (
       />
     </TouchableOpacity>
     <TouchableOpacity
-  onPress={() => navigation && navigation.navigate("updatecategory", { id })}
->
-
+      onPress={() => navigation && navigation.navigate("updatecategory", { id })}
+    >
       <Avatar.Icon
         icon={"pen"}
         size={30}
@@ -174,9 +175,6 @@ const CategoryCard = ({ name, id, deleteHandler, navigate, navigation }) => (
     </TouchableOpacity>
   </View>
 );
-
-
-export default Categories;
 
 const styles = StyleSheet.create({
   container: {
@@ -202,3 +200,6 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 });
+
+export default Categories;
+``

@@ -27,7 +27,7 @@ const ProductListItem = ({
                 <View
                     style={{
                         ...styles.container,
-                        backgroundColor: i % 2 === 0 ? colors.color1 : colors.color3,
+                        backgroundColor: "black",
                     }}
                 >
                     <Image
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         height: 70,
         alignItems: "center",
         padding: 10,
-        borderRadius: 10,
+        borderRadius: 5,
         marginVertical: 10,
     },
 });

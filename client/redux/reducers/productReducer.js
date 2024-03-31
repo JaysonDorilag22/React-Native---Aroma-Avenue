@@ -24,6 +24,7 @@ export const productReducer = createReducer({
             state.loading = false;
             state.products = action.payload;
         })
+        
         .addCase("getAdminProductsSuccess", (state, action) => {
             state.loading = false;
             state.products = action.payload.products;

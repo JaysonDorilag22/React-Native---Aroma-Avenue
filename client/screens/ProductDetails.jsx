@@ -49,12 +49,12 @@ const ProductDetails = ({ route: { params } }) => {
 
   const [quantity, setQuantity] = useState(1);
   const isOutOfStock = stock === 0;
-  const roundedAverage = average.averageRating.toFixed(1);
+
 
   useEffect(() => {
     dispatch(getAllComments(params.id)); // Fetch comments when component mounts
     dispatch(getProductDetails(params.id));
-    dispatch(getProductRatings(params.id));
+    // dispatch(getProductRatings(params.id));
   }, [dispatch, params.id, isFocused]);
 console.log(params.id)
   const incrementQty = () => {
@@ -184,7 +184,8 @@ console.log(params.id)
               style={{ backgroundColor: "white", marginLeft: -10 }}
             />
           </View>
-          <Text style={{ marginLeft: 5 }}>{roundedAverage}</Text>
+          <Text style={{ marginLeft: 5 }}>{parseFloat(average.averageRating).toFixed(1)}</Text>
+
         </View>
         <Text
           style={{ lineHeight: 20, marginVertical: 15, color: "grey" }}

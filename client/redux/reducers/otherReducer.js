@@ -8,10 +8,15 @@ const initialState = {
   user: {},
   loading: false,
   error: null,
-  category: {},
+  category: {}, // Add category property to initial state
+  categories: [],
+
 };
 
-export const otherReducer = createReducer(initialState, (builder) => {
+export const otherReducer = createReducer(
+  initialState,
+
+  (builder) => {
   builder
     .addCase("deleteUserRequest", (state) => {
       state.loading = true;
@@ -49,6 +54,19 @@ export const otherReducer = createReducer(initialState, (builder) => {
     })
     //Category==========================================================================
     //Add category
+    .addCase("getAllCategoriesRequest", (state) => {
+      state.loading = true;
+    })
+    .addCase("getAllCategoriesSuccess", (state, action) => {
+      state.loading = false;
+      state.categories = action.payload;
+    })
+    .addCase("getAllCategoriesFail", (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+
+
     .addCase("addCategoryRequest", (state) => {
       state.loading = true;
     })

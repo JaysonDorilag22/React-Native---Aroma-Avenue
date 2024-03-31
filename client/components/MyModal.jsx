@@ -39,14 +39,15 @@ const MyModal = ({ id, deleteHandler, navigate, setOpenModal }) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: 200,
-        height: 100,
+        width: 120,
+        height: 80,
         alignSelf: "center",
         justifyContent: "center",
         zIndex: 100,
         backgroundColor: colors.color2,
         padding: 20,
-        borderRadius: 10,
+        borderRadius: 5,
+        borderWidth: 1
     },
 
     text: {

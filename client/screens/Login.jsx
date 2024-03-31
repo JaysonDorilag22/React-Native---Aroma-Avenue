@@ -31,12 +31,14 @@ const Login = ({ navigation }) => {
       iosClientId: CLIENT_ID_IOS,
     });
   };
+  
   const navigateToHome = () => {
     navigation.reset({
       index: 0,
       routes: [{ name: "home" }],
     });
   };
+  
 
   useEffect(() => {
     console.log(user);
@@ -59,14 +61,14 @@ const Login = ({ navigation }) => {
     GoogleSignin.signOut();
   });
 
-  const showToast = (type, text) => {
-    Toast.show({
-      type: type,
-      text1: text,
-      visibilityTime: 3000,
-      autoHide: true,
-    });
-  };
+  // const showToast = (type, text) => {
+  //   Toast.show({
+  //     type: type,
+  //     text1: text,
+  //     visibilityTime: 3000,
+  //     autoHide: true,
+  //   });
+  // };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
