@@ -48,7 +48,7 @@ const UserLists = ({ navigation }) => {
       <Header back={true} />
 
       {/* Heading */}
-      <View style={{ marginBottom: 20, paddingTop: 70 }}>
+      <View style={{ marginBottom: 20, paddingTop: 50 }}>
         <Text style={formHeading}>All Users</Text>
       </View>
 
