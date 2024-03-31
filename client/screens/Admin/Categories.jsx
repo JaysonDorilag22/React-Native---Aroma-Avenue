@@ -61,7 +61,7 @@ const Categories = ({ navigation, route, navigate }) => {
       <Header back={true} />
 
       {/* Heading */}
-      <View style={{ marginBottom: 20, paddingTop: 70 }}>
+      <View style={{ marginBottom: 20, paddingTop: 50 }}>
         <Text style={formHeading}>Categories</Text>
       </View>
 
@@ -93,7 +93,7 @@ const Categories = ({ navigation, route, navigate }) => {
         <View
           style={{
             width: 80,
-            height: 80,
+            height: 60,
             alignSelf: "center",
             marginBottom: 20,
           }}
@@ -119,6 +119,7 @@ const Categories = ({ navigation, route, navigate }) => {
                 position: "absolute",
                 bottom: 0,
                 right: -5,
+                
               }}
             />
           </TouchableOpacity>
@@ -133,10 +134,15 @@ const Categories = ({ navigation, route, navigate }) => {
 
         <Button
           textColor={colors.color2}
+          activeOpacity={0.8}
           style={{
-            backgroundColor: colors.color1,
+            backgroundColor: "white",
             margin: 20,
-            padding: 6,
+            padding: 10,
+            borderRadius: 5,
+            fontSize: 12,
+            borderWidth: 1,
+            borderColor: colors.color3,
           }}
           loading={loading}
           disabled={!category}
@@ -150,38 +156,44 @@ const Categories = ({ navigation, route, navigate }) => {
   );
 };
 
-const CategoryCard = ({ name, id, deleteHandler, navigate, navigation }) => (
+const CategoryCard = ({ name, id, deleteHandler, navigation }) => (
   <View style={styles.cardContainer}>
-    <Text style={styles.cardText}>{name}</Text>
-    <TouchableOpacity onPress={() => deleteHandler(id)}>
-      <Avatar.Icon
-        icon={"delete"}
-        size={30}
-        style={{
-          backgroundColor: colors.color1,
-        }}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity
-      onPress={() => navigation && navigation.navigate("updatecategory", { id })}
-    >
-      <Avatar.Icon
-        icon={"pen"}
-        size={30}
-        style={{
-          backgroundColor: colors.color1,
-        }}
-      />
-    </TouchableOpacity>
+    <View style={styles.cardInfo}>
+      <Text style={styles.cardText}>{name}</Text>
+    </View>
+    <View style={styles.cardActions}>
+      <TouchableOpacity onPress={() => deleteHandler(id)}>
+        <Avatar.Icon
+          icon={"delete"}
+          size={30}
+          style={{
+            backgroundColor: colors.color1,
+          }}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          navigation && navigation.navigate("updatecategory", { id })
+        }
+      >
+        <Avatar.Icon
+          icon={"pen"}
+          size={30}
+          style={{
+            backgroundColor: colors.color1,
+          }}
+        />
+      </TouchableOpacity>
+    </View>
   </View>
 );
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    elevation: 10,
-    borderRadius: 10,
-    backgroundColor: colors.color3,
+    padding: 5,
+  
+    borderRadius: 20,
+    
   },
 
   cardContainer: {
@@ -199,7 +211,9 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 1,
   },
+  cardActions: {
+    flexDirection: "row",
+  },
 });
 
 export default Categories;
-``
