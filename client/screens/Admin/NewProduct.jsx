@@ -63,28 +63,26 @@ const NewProduct = ({ navigation, route }) => {
       <View
         style={{
           ...defaultStyle,
-          backgroundColor: colors.color5,
+          // backgroundColor: colors.color5,
         }}
       >
         <Header back={true} />
 
         {/* Heading */}
-        <View style={{ marginBottom: 20, paddingTop: 70 }}>
+        <View style={{ marginBottom: 20, paddingTop: 40 }}>
           <Text style={formHeading}>New Product</Text>
         </View>
 
         <ScrollView
+          showsVerticalScrollIndicator={true}
           style={{
             padding: 20,
-            elevation: 10,
-            borderRadius: 10,
-            backgroundColor: colors.color3,
           }}
         >
           <View
             style={{
               justifyContent: "center",
-              height: 650,
+              height: 500,
             }}
           >
             <View
@@ -164,11 +162,15 @@ const NewProduct = ({ navigation, route }) => {
             </Text>
 
             <Button
-              textColor={colors.color2}
+              activeOpacity={0.8}
               style={{
-                backgroundColor: colors.color1,
+                backgroundColor: "white",
                 margin: 20,
-                padding: 6,
+                padding: 10,
+                borderRadius: 5,
+                fontSize: 12,
+                borderWidth: 1,
+                borderColor: colors.color3,
               }}
               onPress={submitHandler}
               loading={loading}
