@@ -40,7 +40,7 @@ const Analytics = ({ navigation }) => {
             <Header back={true} />
 
             {/* Heading */}
-            <View style={{ marginBottom: 20, paddingTop: 70 }}>
+            <View style={{ marginBottom: 20, paddingTop: 50 }}>
                 <Text style={formHeading}>Analytics</Text>
             </View>
 
