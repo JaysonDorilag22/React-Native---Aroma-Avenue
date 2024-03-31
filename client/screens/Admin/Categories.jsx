@@ -133,7 +133,7 @@ const Categories = ({ navigation, route, navigate }) => {
         />
 
         <Button
-          textColor={colors.color2}
+          textColor={colors.color3}
           activeOpacity={0.8}
           style={{
             backgroundColor: "white",
