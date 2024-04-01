@@ -42,7 +42,7 @@ const ProductDetails = ({ route: { params } }) => {
   const average = useSelector((state) => state.comment.averageRating); // Fetch comments from Redux store
   const loading = useSelector((state) => state.comment.loading); // Fetch loading state from Redux store
 
-  // console.log("current user:", user);
+  console.log("current user:", user._id);
   const {
     product: { name, price, stock, description, images },
   } = useSelector((state) => state.product);
@@ -50,13 +50,12 @@ const ProductDetails = ({ route: { params } }) => {
   const [quantity, setQuantity] = useState(1);
   const isOutOfStock = stock === 0;
 
-
   useEffect(() => {
     dispatch(getAllComments(params.id)); // Fetch comments when component mounts
     dispatch(getProductDetails(params.id));
     // dispatch(getProductRatings(params.id));
   }, [dispatch, params.id, isFocused]);
-console.log(params.id)
+  // console.log(params.id)
   const incrementQty = () => {
     if (stock <= quantity) {
       return Toast.show({
@@ -140,9 +139,7 @@ console.log(params.id)
     }
   };
   return (
-    <ScrollView
-      style={{ ...defaultStyle, padding: 0}}
-    >
+    <ScrollView style={{ ...defaultStyle, padding: 0 }}>
       <Header back={true} />
       <Carousel
         layout="stack"
@@ -184,8 +181,9 @@ console.log(params.id)
               style={{ backgroundColor: "white", marginLeft: -10 }}
             />
           </View>
-          <Text style={{ marginLeft: 5 }}>{parseFloat(average.averageRating).toFixed(1)}</Text>
-
+          <Text style={{ marginLeft: 5 }}>
+            {parseFloat(average.averageRating).toFixed(1)}
+          </Text>
         </View>
         <Text
           style={{ lineHeight: 20, marginVertical: 15, color: "grey" }}
@@ -309,36 +307,40 @@ console.log(params.id)
           }}
         />
 
-        <FlatList
-          data={comments}
-          renderItem={({ item }) => (
-            <View style={{ marginBottom: 10 }}>
-              {/* <Text style={{ fontWeight: "bold" }}>{item.user}</Text> */}
-              <Text>Rating: {item.rating}</Text>
-              <Text>Comment: {item.text}</Text>
-              {user &&
-                user.user &&
-                (user.user.role === "admin" ||
-                  item.user === user.user._id ||
-                  user.user.role === "Guest") && (
-                  <TouchableOpacity
-                    onPress={() => handleDeleteComment(item._id)}
-                  >
-                    <Text style={{ color: "red" }}>Delete</Text>
-                  </TouchableOpacity>
-                )}
-              {/* Separator line */}
-              <View
-                style={{
-                  borderBottomWidth: 1,
-                  borderBottomColor: "gray",
-                  marginTop: 10,
-                }}
-              />
-            </View>
-          )}
-          keyExtractor={(item, index) => index.toString()}
-        />
+<FlatList
+  data={comments}
+  renderItem={({ item }) => (
+    <View style={{ marginBottom: 10 }}>
+      <Text style={{ fontWeight: "bold" }}>{item.user}</Text>
+      <Text>Rating: {item.rating}</Text>
+      <Text>Comment: {item.text}</Text>
+      {user &&
+        (user.role === "admin" ||
+          item.user === user._id ||
+          user.role === "Guest") && (
+          <TouchableOpacity
+            onPress={() => handleDeleteComment(item._id)}
+          >
+            <Text style={{ color: "red" }}>Delete</Text>
+          </TouchableOpacity>
+        )}
+      {/* Separator line */}
+      <View
+        style={{
+          borderBottomWidth: 1,
+          borderBottomColor: "gray",
+          marginTop: 10,
+        }}
+      />
+      {/* Logging user.id */}
+      {console.log("User:", user)}
+      {console.log("Item User:", item.user)}
+      {console.log("User Role:", user.role)}
+    </View>
+  )}
+  keyExtractor={(item, index) => index.toString()}
+/>
+
       </View>
       <Comment />
     </ScrollView>
