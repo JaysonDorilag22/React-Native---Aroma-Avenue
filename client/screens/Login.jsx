@@ -29,7 +29,9 @@ const Login = ({ navigation }) => {
       webClientId: CLIENT_ID_WEB,
       androidClientId: CLIENT_ID_ANDROID,
       iosClientId: CLIENT_ID_IOS,
+      isDebug: true, // Add this line
     });
+    
   };
   
   const navigateToHome = () => {
@@ -83,14 +85,30 @@ const Login = ({ navigation }) => {
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
+      console.log("Play Services are available");
+  
       const userInfo = await GoogleSignin.signIn();
-
+      console.log("User Info from Google Sign In:", userInfo);
+  
       dispatch(verifyToken(userInfo.idToken));
       setError();
-    } catch (e) {
-      setError(e);
+    } catch (error) {
+      console.log("Error signing in with Google:", error.code, error.message, error.details);
+  
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log("Google sign-in cancelled by user");
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log("Google sign-in is already in progress");
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log("Google Play Services are not available");
+      } else {
+        console.log("Other error occurred during Google sign-in");
+      }
+  
+      setError(error);
     }
   };
+  
 
   return (
     <>
