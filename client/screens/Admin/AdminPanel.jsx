@@ -14,16 +14,22 @@ import ProductListItem from "../../components/ProductListItem";
 const AdminPanel = ({ navigation }) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
-  const { products } = useSelector((state) => state.product);
-  const { categories } = useSelector((state) => state.other);
-  console.log("categories:",categories)
-  console.log("products::",products)
 
+  // Use useSelector to get products and categories from Redux store
+  const products = useSelector((state) => state.product.products);
+  const categories = useSelector((state) => state.other.categories);
 
   useEffect(() => {
-    dispatch(getAdminProducts());
     dispatch(getAllCategories());
   }, [dispatch, isFocused]);
+
+  const fetchProducts = async () => {
+    try {
+      await dispatch(getAdminProducts());
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   const navigationHandler = (text) => {
     switch (text) {
@@ -45,9 +51,19 @@ const AdminPanel = ({ navigation }) => {
     }
   };
 
-  const deleteProductHandler = (id) => {
-    dispatch(deleteProduct(id));
-    dispatch(getAdminProducts());
+  // const deleteProductHandler = (id) => {
+  //   dispatch(deleteProduct(id));
+  //   fetchProducts(); // Refresh products after deleting
+  // };
+
+  const deleteProductHandler = async (id) => {
+    try {
+      await     dispatch(deleteProduct(id));
+
+      fetchProducts();
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
   };
 
   return (
@@ -111,34 +127,29 @@ const AdminPanel = ({ navigation }) => {
       <ProductListHeading />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-      <View>
-  {products.map((item, index) => {
-    const categoryId = item.category?._id;
-    const categoryObject = categories.find(cat => cat._id === categoryId);
-    const categoryName = categoryObject ? categoryObject.category : "Uncategorized";
-    return (
-      <ProductListItem
-        navigate={navigation}
-        deleteHandler={deleteProductHandler}
-        key={item._id}
-        id={item._id}
-        i={index}
-        price={item.price}
-        stock={item.stock}
-        name={item.name}
-        category={categoryName}
-        images={item.images.length > 0 ? [item.images[0]] : []} 
-      />
-    );
-  })}
-</View>
-
-</ScrollView>
-
-
-
-
-
+        {/* Render product list */}
+        <View>
+          {products.map((item, index) => {
+            const categoryId = item.category?._id;
+            const categoryObject = categories.find(cat => cat._id === categoryId);
+            const categoryName = categoryObject ? categoryObject.category : "Uncategorized";
+            return (
+              <ProductListItem
+                navigate={navigation}
+                deleteHandler={deleteProductHandler}
+                key={item._id}
+                id={item._id}
+                i={index}
+                price={item.price}
+                stock={item.stock}
+                name={item.name}
+                category={categoryName}
+                images={item.images.length > 0 ? [item.images[0]] : []} 
+              />
+            );
+          })}
+        </View>
+      </ScrollView>
     </View>
   );
 };

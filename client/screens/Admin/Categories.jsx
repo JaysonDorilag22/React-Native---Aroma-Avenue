@@ -8,9 +8,9 @@ import {
 } from "react-native";
 import { Avatar, Button, TextInput } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; // import useSelector
 import mime from "mime";
-import { addCategory, deleteCategory } from "../../redux/actions/otherActions";
+import { addCategory, deleteCategory, getAllCategories } from "../../redux/actions/otherActions";
 import {
   colors,
   defaultStyle,
@@ -18,24 +18,35 @@ import {
   inputOptions,
 } from "../../styles/styles";
 import Header from "../../components/Header";
-import { useMessageAndErrorOther, useSetCategories } from "../../utils/hooks";
+import { useMessageAndErrorOther } from "../../utils/hooks";
 
-const Categories = ({ navigation, route, navigate }) => {
+const Categories = ({ navigation, route }) => {
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
-  const [categories, setCategories] = useState([]);
+
+  const categories = useSelector((state) => state.other.categories); // Use useSelector
 
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
-  useSetCategories(setCategories, isFocused);
 
   const loading = useMessageAndErrorOther(dispatch, navigation, "adminpanel");
 
+  const fetchCategories = async () => {
+    try {
+      await dispatch(getAllCategories());
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
   const deleteHandler = async (id) => {
-    await dispatch(deleteCategory(id));
-    // After deleting category, refetch the categories
-    useSetCategories(setCategories, isFocused);
+    try {
+      await dispatch(deleteCategory(id));
+      fetchCategories();
+    } catch (error) {
+      console.error("Error deleting category:", error);
+    }
   };
 
   const submitHandler = async () => {
@@ -47,9 +58,12 @@ const Categories = ({ navigation, route, navigate }) => {
       name: image.split("/").pop(),
     });
 
-    await dispatch(addCategory(myForm));
-    // After adding category, refetch the categories
-    useSetCategories(setCategories, isFocused);
+    try {
+      await dispatch(addCategory(myForm));
+      fetchCategories();
+    } catch (error) {
+      console.error("Error adding category:", error);
+    }
   };
 
   useEffect(() => {
@@ -57,26 +71,16 @@ const Categories = ({ navigation, route, navigate }) => {
   }, [route.params]);
 
   return (
-    <View style={{ ...defaultStyle, backgroundColor: colors.color5 }}>
+    <View style={{ ...defaultStyle }}>
       <Header back={true} />
 
       {/* Heading */}
-      <View style={{ marginBottom: 20, paddingTop: 50 }}>
+      <View style={{ marginBottom: 20, paddingTop: 25 }}>
         <Text style={formHeading}>Categories</Text>
       </View>
 
-      <ScrollView
-        style={{
-          marginBottom: 20,
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: colors.color2,
-            padding: 20,
-            minHeight: 400,
-          }}
-        >
+      <ScrollView style={{ marginBottom: 20 }}>
+        <View style={{ backgroundColor: colors.color2, padding: 20, minHeight: 400 }}>
           {categories.map((i) => (
             <CategoryCard
               name={i.category}
@@ -88,6 +92,7 @@ const Categories = ({ navigation, route, navigate }) => {
           ))}
         </View>
       </ScrollView>
+
       {/* add category form */}
       <View style={styles.container}>
         <View
@@ -119,7 +124,6 @@ const Categories = ({ navigation, route, navigate }) => {
                 position: "absolute",
                 bottom: 0,
                 right: -5,
-                
               }}
             />
           </TouchableOpacity>
@@ -166,22 +170,14 @@ const CategoryCard = ({ name, id, deleteHandler, navigation }) => (
         <Avatar.Icon
           icon={"delete"}
           size={30}
-          style={{
-            backgroundColor: colors.color1,
-          }}
+          style={{ backgroundColor: colors.color1 }}
         />
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() =>
-          navigation && navigation.navigate("updatecategory", { id })
-        }
-      >
+      <TouchableOpacity onPress={() => navigation && navigation.navigate("updatecategory", { id })}>
         <Avatar.Icon
           icon={"pen"}
           size={30}
-          style={{
-            backgroundColor: colors.color1,
-          }}
+          style={{ backgroundColor: colors.color1 }}
         />
       </TouchableOpacity>
     </View>
@@ -191,11 +187,8 @@ const CategoryCard = ({ name, id, deleteHandler, navigation }) => (
 const styles = StyleSheet.create({
   container: {
     padding: 5,
-  
     borderRadius: 20,
-    
   },
-
   cardContainer: {
     backgroundColor: colors.color2,
     elevation: 5,

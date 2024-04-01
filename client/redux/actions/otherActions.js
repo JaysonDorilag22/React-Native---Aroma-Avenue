@@ -199,6 +199,7 @@ export const getAllCategories = () => async (dispatch) => {
       type: "getAllCategoriesSuccess",
       payload: data.categories,
     });
+    console.log(data)
   } catch (error) {
     console.log("chat action error", error);
 
