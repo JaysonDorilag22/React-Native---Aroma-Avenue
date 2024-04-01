@@ -14,6 +14,7 @@ const ImageCard = ({ src, id, deleteHandler }) => {
                     width: "100%",
                     height: "80%",
                     resizeMode: "contain",
+                    marginBottom: 15
                 }}
             />
             <TouchableOpacity onPress={() => deleteHandler(id)}>
@@ -34,11 +35,11 @@ export default ImageCard;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.color2,
-        elevation: 5,
         margin: 10,
         padding: 15,
         alignItems: "center",
-        borderRadius: 10,
+        borderRadius: 5,
         height: 300,
+        borderWidth: 1
     },
 });

@@ -8,7 +8,7 @@ const initialState = {
   user: {},
   loading: false,
   error: null,
-  category: {}, // Add category property to initial state
+  category: {}, 
   categories: [],
 
 };

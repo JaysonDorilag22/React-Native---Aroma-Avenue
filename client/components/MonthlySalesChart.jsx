@@ -21,7 +21,7 @@ const MonthlySalesChart = ({ data }) => {
     propsForDots: {
       r: "6",
       strokeWidth: "2",
-      stroke: colors.primary
+      stroke: "white"
     }
   };
 

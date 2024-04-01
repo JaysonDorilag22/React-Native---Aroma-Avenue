@@ -1,4 +1,10 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import {
@@ -49,7 +55,20 @@ const NewProduct = ({ navigation, route }) => {
 
     if (categoryID) myForm.append("category", categoryID);
 
-    dispatch(createProduct(myForm));
+    dispatch(createProduct(myForm))
+      .then(() => {
+        // Clear all input fields upon successful submission
+        setName("");
+        setDescription("");
+        setPrice("");
+        setStock("");
+        setCategory("Choose Category");
+        setImage("");
+      })
+      .catch((error) => {
+        // Handle error if necessary
+        console.error("Error creating product:", error);
+      });
   };
 
   const loading = useMessageAndErrorOther(dispatch, navigation, "adminpanel");
@@ -69,12 +88,12 @@ const NewProduct = ({ navigation, route }) => {
         <Header back={true} />
 
         {/* Heading */}
-        <View style={{ marginBottom: 20, paddingTop: 40 }}>
+        <View style={{ marginBottom: 20, paddingTop: 15 }}>
           <Text style={formHeading}>New Product</Text>
         </View>
 
         <ScrollView
-          showsVerticalScrollIndicator={true}
+          showsVerticalScrollIndicator={false}
           style={{
             padding: 20,
           }}
@@ -82,7 +101,7 @@ const NewProduct = ({ navigation, route }) => {
           <View
             style={{
               justifyContent: "center",
-              height: 500,
+              height: 600,
             }}
           >
             <View
@@ -120,49 +139,34 @@ const NewProduct = ({ navigation, route }) => {
                 />
               </TouchableOpacity>
             </View>
+            <Text style={{ marginLeft: 20 }}>Name</Text>
+
+            <TextInput {...inputOptions} value={name} onChangeText={setName} />
+            <Text style={{ marginLeft: 20 }}>Description</Text>
 
             <TextInput
               {...inputOptions}
-              placeholder="Name"
-              value={name}
-              onChangeText={setName}
-            />
-            <TextInput
-              {...inputOptions}
-              placeholder="Description"
               value={description}
               onChangeText={setDescription}
             />
+            <Text style={{ marginLeft: 20 }}>Price</Text>
 
             <TextInput
               {...inputOptions}
-              placeholder="Price"
               keyboardType="number-pad"
               value={price}
               onChangeText={setPrice}
             />
+            <Text style={{ marginLeft: 20 }}>Stock</Text>
+
             <TextInput
               {...inputOptions}
               keyboardType="number-pad"
-              placeholder="Stock"
               value={stock}
               onChangeText={setStock}
             />
 
             <Text
-              style={{
-                ...inputStyling,
-                textAlign: "center",
-                textAlignVertical: "center",
-                borderRadius: 3,
-              }}
-              onPress={() => setVisible(true)}
-            >
-              {category}
-            </Text>
-
-            <Button
-              activeOpacity={0.8}
               style={{
                 backgroundColor: "white",
                 margin: 20,
@@ -172,12 +176,34 @@ const NewProduct = ({ navigation, route }) => {
                 borderWidth: 1,
                 borderColor: colors.color3,
               }}
-              onPress={submitHandler}
-              loading={loading}
-              disabled={disableBtnCondition || loading}
+              onPress={() => setVisible(true)}
             >
-              Create
-            </Button>
+              {category}
+            </Text>
+
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={{
+                backgroundColor: "black",
+                margin: 20,
+                padding: 10,
+                borderRadius: 5,
+                fontSize: 12,
+                borderWidth: 1,
+                borderColor: colors.color3,
+              }}
+              onPress={submitHandler}
+              disabled={loading || disableBtnCondition}
+            >
+              {/* Render either 'Create' text or ActivityIndicator based on loading state */}
+              {loading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={{ color: "white", textAlign: "center" }}>
+                  Create
+                </Text>
+              )}
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>

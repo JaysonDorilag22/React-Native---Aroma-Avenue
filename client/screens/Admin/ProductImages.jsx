@@ -49,13 +49,12 @@ const ProductImages = ({ navigation, route }) => {
     <View
       style={{
         ...defaultStyle,
-        backgroundColor: colors.color5,
       }}
     >
       <Header back={true} />
 
       {/* Heading */}
-      <View style={{ marginBottom: 20, paddingTop: 70 }}>
+      <View style={{ marginBottom: 20, paddingTop: 15 }}>
         <Text style={formHeading}>Images</Text>
       </View>
 
@@ -126,9 +125,11 @@ const ProductImages = ({ navigation, route }) => {
 
         <Button
           style={{
-            backgroundColor: colors.color1,
-            padding: 6,
-          }}
+                  backgroundColor: "white",
+                  margin: 20,
+                  padding: 6,
+                  borderRadius: 5,
+                }}
           textColor={colors.color2}
           loading={loading}
           onPress={submitHandler}

@@ -40,7 +40,7 @@ const Analytics = ({ navigation }) => {
             <Header back={true} />
 
             {/* Heading */}
-            <View style={{ marginBottom: 20, paddingTop: 50 }}>
+            <View style={{ marginBottom: 20, paddingTop: 30 }}>
                 <Text style={formHeading}>Analytics</Text>
             </View>
 
@@ -53,8 +53,8 @@ const Analytics = ({ navigation }) => {
                             <Text style={{ fontSize: 20, fontWeight: 600, marginBottom: 10 }}>Stocks Chart</Text>
                             <View
                                 style={{
-                                    backgroundColor: colors.color3,
-                                    borderRadius: 20,
+                                    backgroundColor: "white",
+                                    borderRadius: 5,
                                     alignItems: "center",
                                     marginBottom: 10,
                                 }}
@@ -72,8 +72,8 @@ const Analytics = ({ navigation }) => {
                             <Text style={{ fontSize: 20, fontWeight: 600, marginBottom: 10 }}>Product Sales</Text>
                             <View
                                 style={{
-                                    backgroundColor: colors.color3,
-                                    borderRadius: 20,
+                                    backgroundColor: "white",
+                                    borderRadius: 5,
                                     alignItems: "center",
                                     marginBottom: 10,
                                 }}
@@ -92,8 +92,8 @@ const Analytics = ({ navigation }) => {
                             <Text style={{ fontSize: 20, fontWeight: 600, marginBottom: 10 }}>Customer Sales</Text>
                             <View
                                 style={{
-                                    backgroundColor: colors.color3,
-                                    borderRadius: 20,
+                                    backgroundColor: "white",
+                                    borderRadius: 5,
                                     alignItems: "center",
                                     marginBottom: 10,
                                     
@@ -113,8 +113,8 @@ const Analytics = ({ navigation }) => {
                             <Text style={{ fontSize: 20, fontWeight: 600, marginBottom: 10 }}>Monthly Sales</Text>
                             <View
                                 style={{
-                                    backgroundColor: colors.color3,
-                                    borderRadius: 20,
+                                    backgroundColor: "white",
+                                    borderRadius: 5,
                                     alignItems: "center",
                                     marginBottom: 10,
                                 }}

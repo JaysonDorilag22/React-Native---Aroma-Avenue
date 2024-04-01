@@ -35,7 +35,7 @@ const SelectComponent = ({
                         icon={"close"}
                     />
                 </TouchableOpacity>
-                <Headline style={styles.heading}> Select a Category</Headline>
+                <Headline style={styles.heading} > Select a Category</Headline>
                 <ScrollView>
                     {categories.map((i) => (
                         <Text
@@ -59,23 +59,24 @@ const styles = StyleSheet.create({
         backgroundColor: colors.color2,
         position: "absolute",
         padding: 35,
-        borderRadius: 20,
+        borderRadius: 5,
         width: "90%",
         height: "90%",
         alignSelf: "center",
-        elevation: 5,
+        // elevation: 5,
+        borderColor: "black",
+        borderWidth: 1,
         top: 50,
     },
     heading: {
         textAlign: "center",
         marginVertical: 10,
-        backgroundColor: colors.color3,
         borderRadius: 5,
         padding: 3,
-        color: colors.color2,
+        color: "black",
     },
     text: {
-        fontSize: 17,
+        fontSize: 12,
         fontWeight: "100",
         textTransform: "uppercase",
         marginVertical: 10,

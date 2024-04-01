@@ -49,13 +49,12 @@ const CategoryImages = ({ navigation, route }) => {
     <View
       style={{
         ...defaultStyle,
-        backgroundColor: colors.color5,
       }}
     >
       <Header back={true} />
 
       {/* Heading */}
-      <View style={{ marginBottom: 20, paddingTop: 70 }}>
+      <View style={{ marginBottom: 20, paddingTop: 15 }}>
         <Text style={formHeading}>Images</Text>
       </View>
 
@@ -85,7 +84,7 @@ const CategoryImages = ({ navigation, route }) => {
       <View
         style={{
           padding: 20,
-          borderRadius: 10,
+          borderRadius: 5,
           backgroundColor: colors.color3,
         }}
       >
@@ -96,6 +95,7 @@ const CategoryImages = ({ navigation, route }) => {
             height: 100,
             alignSelf: "center",
             resizeMode: "contain",
+          borderWidth:1,
           }}
           source={{ uri: image }}
         />
@@ -117,6 +117,7 @@ const CategoryImages = ({ navigation, route }) => {
               style={{
                 backgroundColor: colors.color2,
                 margin: 10,
+
               }}
               size={30}
               color={colors.color3}
@@ -126,10 +127,12 @@ const CategoryImages = ({ navigation, route }) => {
 
         <Button
           style={{
-            backgroundColor: colors.color1,
-            padding: 6,
-          }}
-          textColor={colors.color2}
+                  backgroundColor: "white",
+                  margin: 20,
+                  padding: 6,
+                  borderRadius: 5,
+                }}
+          textColor={"black"}
           loading={loading}
           onPress={submitHandler}
           disabled={!imageChanged}

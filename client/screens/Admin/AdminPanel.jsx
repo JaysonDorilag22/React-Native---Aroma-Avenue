@@ -15,9 +15,10 @@ const AdminPanel = ({ navigation }) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const { products } = useSelector((state) => state.product);
+  const { categories } = useSelector((state) => state.other);
+  console.log("categories:",categories)
+  console.log("products::",products)
 
-  // const { category } = useSelector((state) => state.otherReducer.category);
-  // console.log(categories)
 
   useEffect(() => {
     dispatch(getAdminProducts());
@@ -54,7 +55,7 @@ const AdminPanel = ({ navigation }) => {
       <Header back={true} />
       {/* Heading */}
       <View style={{ paddingTop: 40, marginBottom: 20 }}>
-        <Text style={formHeading}>Admin Panel</Text>
+        <Text style={formHeading}>Admin Panels</Text>
       </View>
 
       <View>
@@ -110,23 +111,34 @@ const AdminPanel = ({ navigation }) => {
       <ProductListHeading />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View>
-          {products.map((item, index) => (
-            <ProductListItem
-              navigate={navigation}
-              deleteHandler={deleteProductHandler}
-              key={item._id}
-              id={item._id}
-              i={index}
-              price={item.price}
-              stock={item.stock}
-              name={item.name}
-              // category={categories.find(cat => cat._id === item.category)?.name} // Assuming category IDs are stored in products and category names are stored in categories
-              imgSrc={item.images[0].url}
-            />
-          ))}
-        </View>
-      </ScrollView>
+      <View>
+  {products.map((item, index) => {
+    const categoryId = item.category?._id;
+    const categoryObject = categories.find(cat => cat._id === categoryId);
+    const categoryName = categoryObject ? categoryObject.category : "Uncategorized";
+    return (
+      <ProductListItem
+        navigate={navigation}
+        deleteHandler={deleteProductHandler}
+        key={item._id}
+        id={item._id}
+        i={index}
+        price={item.price}
+        stock={item.stock}
+        name={item.name}
+        category={categoryName}
+        images={item.images.length > 0 ? [item.images[0]] : []} 
+      />
+    );
+  })}
+</View>
+
+</ScrollView>
+
+
+
+
+
     </View>
   );
 };

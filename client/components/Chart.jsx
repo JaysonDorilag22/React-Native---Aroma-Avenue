@@ -10,14 +10,14 @@ const Chart = ({ inStock = 0, outOfStock = 0 }) => {
         {
             name: "Out of Stock",
             population: outOfStock,
-            color: colors.color1_light,
-            legendFontColor: colors.color2,
+            color: "black",
+            legendFontColor: "black",
         },
         {
             name: "In Stock",
             population: inStock,
-            color: colors.color1_light2,
-            legendFontColor: colors.color2,
+            color: "grey",
+            legendFontColor: "black",
         },
     ];
 
