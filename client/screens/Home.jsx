@@ -11,7 +11,7 @@ import slide1 from '../assets/carousel/slide1.png';
 import slide2 from '../assets/carousel/slide2.png';
 import slide3 from '../assets/carousel/slide3.png';
 import slide4 from '../assets/carousel/slide4.png';
-import slide5 from '../assets/carousel/slide5.png';
+// import slide5 from '../assets/carousel/slide5.png';
 import Header from "../components/Header";
 import SearchModal from "../components/SearchModal";
 import ProductCard from "../components/ProductCard";
@@ -105,7 +105,7 @@ const Home = () => {
       { title: slide2 },
       { title: slide3 },
       { title: slide4 },
-      { title: slide5 },
+     
     ];
     setCarouselItems(carouselData);
   }, []);
