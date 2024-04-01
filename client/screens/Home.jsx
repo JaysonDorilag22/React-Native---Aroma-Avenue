@@ -180,6 +180,27 @@ const Home = () => {
             }}
             showsHorizontalScrollIndicator={false}
           >
+            {/* All category button */}
+            <Button
+              style={{
+                backgroundColor:
+                  category === "" ? colors.color1 : colors.color5,
+                borderRadius: 5,
+                margin: 5,
+              }}
+              onPress={() => categoryButtonHandler("")}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: category === "" ? colors.color2 : "gray",
+                }}
+              >
+                All
+              </Text>
+            </Button>
+            
+            {/* Other categories buttons */}
             {categories.map((item, index) => (
               <Button
                 key={item._id}

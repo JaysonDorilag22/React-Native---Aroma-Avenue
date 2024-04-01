@@ -35,7 +35,7 @@ export const getAllProducts = asyncError(async (req, res, next) => {
     query.category = category;
   }
 
-  const products = await Product.find(query);
+  const products = await Product.find(query).populate('category'); // Populate the category field
 
   res.status(200).json({
     success: true,

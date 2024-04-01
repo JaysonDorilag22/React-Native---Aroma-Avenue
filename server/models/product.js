@@ -17,9 +17,7 @@ const schema = new mongoose.Schema({
     type: Number,
     required: [true, "Please Enter Stock"],
   },
-
   images: [{ public_id: String, url: String }],
-
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
@@ -28,6 +26,14 @@ const schema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+schema.virtual('categoryRef', {
+  ref: 'Category',
+  localField: 'category',
+  foreignField: '_id',
+  justOne: true,
+  options: { select: 'category' } 
 });
 
 export const Product = mongoose.model("Product", schema);

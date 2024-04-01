@@ -17,8 +17,7 @@ const AdminPanel = ({ navigation }) => {
 
   // Use useSelector to get products and categories from Redux store
   const products = useSelector((state) => state.product.products);
-  const categories = useSelector((state) => state.other.categories);
-
+  console.log("this are the products",products)
   useEffect(() => {
     dispatch(getAllCategories());
   }, [dispatch, isFocused]);
@@ -127,29 +126,26 @@ const AdminPanel = ({ navigation }) => {
       <ProductListHeading />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Render product list */}
-        <View>
-          {products.map((item, index) => {
-            const categoryId = item.category?._id;
-            const categoryObject = categories.find(cat => cat._id === categoryId);
-            const categoryName = categoryObject ? categoryObject.category : "Uncategorized";
-            return (
-              <ProductListItem
-                navigate={navigation}
-                deleteHandler={deleteProductHandler}
-                key={item._id}
-                id={item._id}
-                i={index}
-                price={item.price}
-                stock={item.stock}
-                name={item.name}
-                category={categoryName}
-                images={item.images.length > 0 ? [item.images[0]] : []} 
-              />
-            );
-          })}
-        </View>
-      </ScrollView>
+  {/* Log products and their associated categories */}
+  {products.map((item, index) => {
+    return (
+      <ProductListItem
+        navigate={navigation}
+        deleteHandler={deleteProductHandler}
+        key={item._id}
+        id={item._id}
+        i={index}
+        price={item.price}
+        stock={item.stock}
+        name={item.name}
+        images={item.images.length > 0 ? [item.images[0]] : []} 
+        category={item.category ? item.category.category : "Uncategorized"} // Access the category name
+      />
+    );
+  })}
+</ScrollView>
+
+
     </View>
   );
 };
