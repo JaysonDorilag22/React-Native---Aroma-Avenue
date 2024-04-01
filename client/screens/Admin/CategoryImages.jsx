@@ -1,19 +1,19 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
+import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { Avatar, Button } from "react-native-paper";
+import { useDispatch } from "react-redux";
+import mime from "mime";
 import { colors, defaultStyle, formHeading } from "../../styles/styles";
 import Header from "../../components/Header";
 import ImageCard from "../../components/ImageCard";
-import { Avatar, Button } from "react-native-paper";
 import { useMessageAndErrorOther } from "../../utils/hooks";
-import { useDispatch } from "react-redux";
-import mime from "mime";
 import {
   deleteCategoryImage,
   updateCategoryImage,
 } from "../../redux/actions/otherActions";
 
 const CategoryImages = ({ navigation, route }) => {
-  const [images] = useState(route.params.images);
+  const [images, setImages] = useState(route.params.images || []);
   const [categoryId] = useState(route.params.id);
   const [image, setImage] = useState(null);
   const [imageChanged, setImageChanged] = useState(false);
@@ -22,21 +22,40 @@ const CategoryImages = ({ navigation, route }) => {
 
   const loading = useMessageAndErrorOther(dispatch, navigation, "adminpanel");
 
-  const deleteHandler = (imageId) => {
-    dispatch(deleteCategoryImage(categoryId, imageId));
+  const deleteHandler = async (imageId) => {
+    try {
+      await dispatch(deleteCategoryImage(categoryId, imageId));
+      setImages(images.filter((img) => img._id !== imageId));
+    } catch (error) {
+      console.error("Error deleting category image:", error);
+    }
   };
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     const myForm = new FormData();
-
+  
     myForm.append("file", {
       uri: image,
       type: mime.getType(image),
       name: image.split("/").pop(),
     });
+  
+    try {
+            await dispatch(updateCategoryImage(categoryId, myForm));
+      
+      // Assuming the response contains the updated images array
+      const updatedImages = [...images, { _id: 'new_image_id', url: image }];
 
-    dispatch(updateCategoryImage(categoryId, myForm));
+      setImages(updatedImages);
+      
+      // Reset the image and imageChanged state
+      setImage(null);
+      setImageChanged(false);
+    } catch (error) {
+      console.error("Error updating category image:", error);
+    }
   };
+  
 
   useEffect(() => {
     if (route.params?.image) {
@@ -46,23 +65,15 @@ const CategoryImages = ({ navigation, route }) => {
   }, [route.params]);
 
   return (
-    <View
-      style={{
-        ...defaultStyle,
-      }}
-    >
+    <View style={{ ...defaultStyle }}>
       <Header back={true} />
 
       {/* Heading */}
       <View style={{ marginBottom: 20, paddingTop: 15 }}>
-        <Text style={formHeading}>Images</Text>
+        <Text style={formHeading}>Category Images</Text>
       </View>
 
-      <ScrollView
-        style={{
-          marginBottom: 20,
-        }}
-      >
+      <ScrollView style={{ marginBottom: 20 }}>
         <View
           style={{
             backgroundColor: colors.color2,
@@ -95,7 +106,7 @@ const CategoryImages = ({ navigation, route }) => {
             height: 100,
             alignSelf: "center",
             resizeMode: "contain",
-          borderWidth:1,
+            borderWidth: 1,
           }}
           source={{ uri: image }}
         />
@@ -117,7 +128,6 @@ const CategoryImages = ({ navigation, route }) => {
               style={{
                 backgroundColor: colors.color2,
                 margin: 10,
-
               }}
               size={30}
               color={colors.color3}
@@ -127,11 +137,11 @@ const CategoryImages = ({ navigation, route }) => {
 
         <Button
           style={{
-                  backgroundColor: "white",
-                  margin: 20,
-                  padding: 6,
-                  borderRadius: 5,
-                }}
+            backgroundColor: "white",
+            margin: 20,
+            padding: 6,
+            borderRadius: 5,
+          }}
           textColor={"black"}
           loading={loading}
           onPress={submitHandler}

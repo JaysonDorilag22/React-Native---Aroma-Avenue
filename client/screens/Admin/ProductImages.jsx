@@ -13,7 +13,7 @@ import {
 } from "../../redux/actions/otherActions";
 
 const ProductImages = ({ navigation, route }) => {
-  const [images] = useState(route.params.images);
+  const [images, setImages] = useState(route.params.images || []);
   const [productId] = useState(route.params.id);
   const [image, setImage] = useState(null);
   const [imageChanged, setImageChanged] = useState(false);
@@ -22,21 +22,42 @@ const ProductImages = ({ navigation, route }) => {
 
   const loading = useMessageAndErrorOther(dispatch, navigation, "adminpanel");
 
-  const deleteHandler = (imageId) => {
-    dispatch(deleteProductImage(productId, imageId));
+  const deleteHandler = async (imageId) => {
+    try {
+      await dispatch(deleteProductImage(productId, imageId));
+      setImages(images.filter(img => img._id !== imageId));
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
   };
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     const myForm = new FormData();
-
+  
     myForm.append("file", {
       uri: image,
       type: mime.getType(image),
       name: image.split("/").pop(),
     });
-
-    dispatch(updateProductImage(productId, myForm));
+  
+    try {
+      // Dispatch the action to update the product image
+      await dispatch(updateProductImage(productId, myForm));
+  
+      // Assuming the updateProductImage action returns the updated images array
+      const updatedImages = [...images, { _id: 'new_image_id', url: image }];
+      
+      // Update the images state with the updated images
+      setImages(updatedImages);
+  
+      // Reset the image and imageChanged state
+      setImage(null);
+      setImageChanged(false);
+    } catch (error) {
+      console.error("Error updating product image:", error);
+    }
   };
+  
 
   useEffect(() => {
     if (route.params?.image) {
@@ -125,12 +146,12 @@ const ProductImages = ({ navigation, route }) => {
 
         <Button
           style={{
-                  backgroundColor: "white",
-                  margin: 20,
-                  padding: 6,
-                  borderRadius: 5,
-                }}
-          textColor={colors.color2}
+            backgroundColor: "white",
+            margin: 20,
+            padding: 6,
+            borderRadius: 5,
+          }}
+          textColor={"black"}
           loading={loading}
           onPress={submitHandler}
           disabled={!imageChanged}
