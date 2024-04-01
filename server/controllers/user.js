@@ -1,11 +1,16 @@
 import { User } from "../models/user.js";
 import ErrorHandler from "../utils/error.js";
 import { asyncError } from "../middlewares/error.js";
-import { cookieOptions, getDataUri, sendEmail, sendToken, imageUriToDataUri } from "../utils/features.js";
+import {
+  cookieOptions,
+  getDataUri,
+  sendEmail,
+  sendToken,
+  imageUriToDataUri,
+} from "../utils/features.js";
 import { passwordResetEmailTemplate } from "../utils/emailHTMLTemplate.js";
 
 import cloudinary from "cloudinary";
-
 
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -28,35 +33,27 @@ export const login = async (req, res, next) => {
 };
 
 export const signup = asyncError(async (req, res, next) => {
-  const { name, email, password, address, city, country, pinCode, googleId } = req.body;
+  const { name, email, password, address, city, country, pinCode, googleId } =
+    req.body;
 
   let user = await User.findOne({ email });
   if (user) return next(new ErrorHandler("User Already Exist", 400));
-  let signInMethod = 'local';
+  let signInMethod = "local";
   if (googleId !== undefined) {
-    signInMethod = 'google'
-
+    signInMethod = "google";
   }
-
-
   let avatar = undefined;
-
   if (req.file) {
-
-
     const file = getDataUri(req.file);
     const myCloud = await cloudinary.v2.uploader.upload(file.content);
     avatar = {
       public_id: myCloud.public_id,
       url: myCloud.secure_url,
     };
-
-
-  }
-  else {
+  } else {
     let dataUri;
-  
-    console.log(req.body.file)
+
+    console.log(req.body.file);
     if (req.body.file) {
       if (googleId !== undefined) {
         dataUri = await imageUriToDataUri(req.body.file);
@@ -68,7 +65,6 @@ export const signup = asyncError(async (req, res, next) => {
         url: myCloud.secure_url,
       };
     }
-
   }
 
   user = await User.create({
@@ -87,22 +83,20 @@ export const signup = asyncError(async (req, res, next) => {
   sendToken(user, res, `Registered Successfully`, 201);
 });
 
-export const getAllUsers = asyncError (async (req, res) => {
+export const getAllUsers = asyncError(async (req, res) => {
   const loggedInUserId = req.user._id;
 
   try {
-      const users = await User.find({ _id: { $ne: loggedInUserId } })
-      res.status(200).json({
-          success: true,
-          users
-      });
-
+    const users = await User.find({ _id: { $ne: loggedInUserId } });
+    res.status(200).json({
+      success: true,
+      users,
+    });
   } catch (err) {
-      console.log("Error retrieving users", err);
+    console.log("Error retrieving users", err);
 
-      res.status(500).json({ message: "Error retrieving users" });
+    res.status(500).json({ message: "Error retrieving users" });
   }
-
 });
 
 export const getMyProfile = asyncError(async (req, res, next) => {
@@ -138,11 +132,10 @@ export const updateProfile = asyncError(async (req, res, next) => {
   if (city) user.city = city;
   if (country) user.country = country;
   if (pinCode) user.pinCode = pinCode;
-  if (user.googleId){
-    user.signInMethod = 'google';
-  }
-  else{
-    user.signInMethod = 'local';
+  if (user.googleId) {
+    user.signInMethod = "google";
+  } else {
+    user.signInMethod = "local";
   }
   await user.save();
 
@@ -196,7 +189,6 @@ export const updatePic = asyncError(async (req, res, next) => {
   });
 });
 
-
 export const forgetPassword = asyncError(async (req, res, next) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
@@ -211,7 +203,7 @@ export const forgetPassword = asyncError(async (req, res, next) => {
   user.otp_expire = new Date(Date.now() + otp_expire);
   await user.save();
 
-  const message = passwordResetEmailTemplate.replace('{{OTP}}', otp);
+  const message = passwordResetEmailTemplate.replace("{{OTP}}", otp);
 
   try {
     await sendEmail("OTP For Resetting Password", user.email, message);
@@ -260,7 +252,6 @@ export const forgetPassword = asyncError(async (req, res, next) => {
 //   });
 // });
 
-
 export const resetPassword = asyncError(async (req, res, next) => {
   const { otp, password } = req.body;
 
@@ -292,14 +283,12 @@ export const resetPassword = asyncError(async (req, res, next) => {
 export const googleLogin = asyncError(async (req, res, next) => {
   const user = await User.findOne({ googleId: req.payload.sub });
 
-
   if (!user) {
-
     return next(new ErrorHandler("Invalid ID", 400));
   }
 
   sendToken(user, res, `Welcome Back, ${user.name}`, 200);
-})
+});
 
 export const deleteUser = asyncError(async (req, res, next) => {
   const user = await User.findById(req.params.id);
@@ -307,15 +296,15 @@ export const deleteUser = asyncError(async (req, res, next) => {
   const users = await User.find({ user: user._id });
 
   for (let i = 0; i < users.length; i++) {
-      const user = users[i];
-      user.user = undefined;
-      await user.save();
+    const user = users[i];
+    user.user = undefined;
+    await user.save();
   }
 
   await user.deleteOne();
 
   res.status(200).json({
-  success: true,
-  message: "user Deleted Successfully",
+    success: true,
+    message: "user Deleted Successfully",
   });
 });

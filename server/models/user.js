@@ -54,7 +54,7 @@ const schema = new mongoose.Schema({
   googleId: {
     type: String,
     required: false,
-    unique: true,
+    // unique: true,
   },
   contactRequest: [
     {
