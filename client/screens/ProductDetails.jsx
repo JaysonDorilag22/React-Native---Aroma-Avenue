@@ -42,7 +42,7 @@ const ProductDetails = ({ route: { params } }) => {
   const average = useSelector((state) => state.comment.averageRating); // Fetch comments from Redux store
   const loading = useSelector((state) => state.comment.loading); // Fetch loading state from Redux store
 
-  console.log("current user:", user._id);
+  // console.log("currently log in:", user);
   const {
     product: { name, price, stock, description, images },
   } = useSelector((state) => state.product);
@@ -53,7 +53,6 @@ const ProductDetails = ({ route: { params } }) => {
   useEffect(() => {
     dispatch(getAllComments(params.id)); // Fetch comments when component mounts
     dispatch(getProductDetails(params.id));
-    // dispatch(getProductRatings(params.id));
   }, [dispatch, params.id, isFocused]);
   // console.log(params.id)
   const incrementQty = () => {
@@ -297,7 +296,11 @@ const ProductDetails = ({ route: { params } }) => {
             marginTop: 20,
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>Comments</Text>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+            Customer reviews {"("}
+            {comments.length}
+            {")"}
+          </Text>
         </View>
         <View
           style={{
@@ -307,40 +310,49 @@ const ProductDetails = ({ route: { params } }) => {
           }}
         />
 
-<FlatList
-  data={comments}
-  renderItem={({ item }) => (
-    <View style={{ marginBottom: 10 }}>
-      <Text style={{ fontWeight: "bold" }}>{item.user}</Text>
-      <Text>Rating: {item.rating}</Text>
-      <Text>Comment: {item.text}</Text>
-      {user &&
-        (user.role === "admin" ||
-          item.user === user._id ||
-          user.role === "Guest") && (
-          <TouchableOpacity
-            onPress={() => handleDeleteComment(item._id)}
-          >
-            <Text style={{ color: "red" }}>Delete</Text>
-          </TouchableOpacity>
-        )}
-      {/* Separator line */}
-      <View
-        style={{
-          borderBottomWidth: 1,
-          borderBottomColor: "gray",
-          marginTop: 10,
-        }}
-      />
-      {/* Logging user.id */}
-      {console.log("User:", user)}
-      {console.log("Item User:", item.user)}
-      {console.log("User Role:", user.role)}
-    </View>
-  )}
-  keyExtractor={(item, index) => index.toString()}
-/>
+        <FlatList
+          data={comments}
+          renderItem={({ item }) => (
+            <View style={{ marginBottom: 10 }}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={{ fontWeight: "bold" }}>{item.user.name}</Text>
 
+                <Avatar.Icon
+                  icon="star"
+                  size={30}
+                  color="#FFD700"
+                  style={{ backgroundColor: "white" }}
+                />
+                <Text style={{ marginLeft: -5 }}>{item.rating}</Text>
+              </View>
+
+              <Text>Comment: {item.text}</Text>
+              {user &&
+                (user.role === "admin" ||
+                  item.user === user._id ||
+                  user.role === "Guest") && (
+                  <TouchableOpacity
+                    onPress={() => handleDeleteComment(item._id)}
+                  >
+                    <Text style={{ color: "red" }}>Delete</Text>
+                  </TouchableOpacity>
+                )}
+              {/* Separator line */}
+              <View
+                style={{
+                  borderBottomWidth: 1,
+                  borderBottomColor: "gray",
+                  marginTop: 10,
+                }}
+              />
+              {/* Logging user.id */}
+              {/* {console.log("User:", user)}
+              {console.log("Item User:", item.user)}
+              {console.log("User Role:", user.role)} */}
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
       <Comment />
     </ScrollView>

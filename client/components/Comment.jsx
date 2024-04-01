@@ -15,6 +15,7 @@ import {
   getAllComments,
   getProductRatings,
 } from "../redux/actions/commentActions";
+import { useGetOrders } from "../utils/hooks";
 
 const Comment = () => {
   const user = useSelector((state) => state.user);
@@ -24,6 +25,25 @@ const Comment = () => {
   const [text, setNewCommentText] = useState("");
   const [rating, setRating] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Fetch user's orders using the custom hook
+  const { orders, loading: ordersLoading, error: ordersError } = useGetOrders(user.user._id);
+console.log(orders)
+  useEffect(() => {
+    // If orders are successfully fetched and product ID is available, fetch comments and ratings
+    if (orders && orders.length > 0 && product.product._id) {
+      dispatch(getAllComments(product.product._id));
+      dispatch(getProductRatings(product.product._id));
+    }
+  }, [dispatch, orders, product.product._id]);
+
+  useEffect(() => {
+    // Handle errors while fetching orders
+    if (ordersError) {
+      console.error("Error fetching orders:", ordersError);
+      // Handle error state accordingly
+    }
+  }, [ordersError]);
 
   const showToast = (type, text) => {
     Toast.show({
@@ -35,45 +55,50 @@ const Comment = () => {
   };
 
   const handleAddComment = () => {
+    console.log("Starting handleAddComment function...");
+
     if (!text) {
-      showToast("error", "Please enter a comment.");
-      setIsLoading(false);
-      return;
+        console.log("No text provided for comment.");
+        showToast("error", "Please enter a comment.");
+        return;
     }
+
+    console.log("Text provided for comment:", text);
 
     setIsLoading(true);
 
-    dispatch(addComment(text, user.user._id, product.product._id, rating))
-      .then((response) => {
-        setNewCommentText("");
-        setRating(0);
-        showToast("success", "Comment added successfully");
-        dispatch(getAllComments(product.product._id));
-        dispatch(getProductRatings(product.product._id));
-      })
-      .catch((error) => {
-        console.error("Error adding comment:", error);
-        showToast("error", "Purchase required for comments");
-        if (error.response) {
-          console.error("Server response data:", error.response.data);
-          showToast("error", error.response.data.message);
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+    // Check if the user has ordered the product
+    const hasOrderedProduct = orders.some(order => order.orderStatus === "Delivered");
 
-  useEffect(() => {
-    if (product.product._id) {
-      dispatch(getAllComments(product.product._id));
-      dispatch(getProductRatings(product.product._id));
+    if (!hasOrderedProduct) {
+        showToast("error", "You can only comment on delivered products.");
+        setIsLoading(false);
+        return;
     }
-  }, [dispatch, product.product._id]);
+
+    dispatch(addComment(text, user.user._id, product.product._id, rating))
+        .then(() => {
+            console.log("Comment added successfully!");
+            setNewCommentText("");
+            setRating(0);
+            showToast("success", "Comment added successfully");
+            dispatch(getAllComments(product.product._id));
+            dispatch(getProductRatings(product.product._id));
+        })
+        .catch((error) => {
+            console.error("Error adding comment:", error);
+            showToast("error", "Failed to add comment");
+        })
+        .finally(() => {
+            console.log("Finally block executed.");
+            setIsLoading(false);
+        });
+};
+
 
   return (
     <View style={styles.container}>
-      <View >
+      <View>
         <Rating
           showRating
           reviewSize={10}
