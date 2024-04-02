@@ -158,6 +158,7 @@ const deliveredTemplate = (order) => {
             <p style="color: #666;">Overall Price: $${order.totalAmount}</p>
             <p style="color: #666;">Shipping Address: ${order.shippingInfo.address}, ${order.shippingInfo.city}, ${order.shippingInfo.country} - ${order.shippingInfo.pinCode}</p>
             <p style="color: #666;">Thank you for shopping with us.</p>
+            
         </div>
     `;
 };
