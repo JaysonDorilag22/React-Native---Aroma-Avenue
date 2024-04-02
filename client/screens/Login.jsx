@@ -22,6 +22,7 @@ import logo from "../assets/logo.png"
 import { useMessageAndErrorUser } from "../utils/hooks";
 import { CLIENT_ID_WEB, CLIENT_ID_ANDROID, CLIENT_ID_IOS } from "@env";
 const Login = ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const { newUser, user } = useSelector((state) => state.user);
   const configureGoogleSignIn = () => {
@@ -76,7 +77,7 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const loading = useMessageAndErrorUser(navigation, dispatch, "home");
+  const isloading = useMessageAndErrorUser(navigation, dispatch, "home");
 
   const submitHandler = () => {
     dispatch(login(email, password));
@@ -84,30 +85,18 @@ const Login = ({ navigation }) => {
 
   const signIn = async () => {
     try {
+      setLoading(true);
       await GoogleSignin.hasPlayServices();
-      console.log("Play Services are available");
-  
       const userInfo = await GoogleSignin.signIn();
-      console.log("User Info from Google Sign In:", userInfo);
-  
       dispatch(verifyToken(userInfo.idToken));
       setError();
-    } catch (error) {
-      console.log("Error signing in with Google:", error.code, error.message, error.details);
-  
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log("Google sign-in cancelled by user");
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log("Google sign-in is already in progress");
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log("Google Play Services are not available");
-      } else {
-        console.log("Other error occurred during Google sign-in");
-      }
-  
-      setError(error);
+    } catch (e) {
+      setError(e);
+    } finally {
+      setLoading(false);
     }
   };
+  
   
 
   return (
@@ -159,20 +148,21 @@ const Login = ({ navigation }) => {
             activeOpacity={0.8}
             style={styles.btn}
             onPress={submitHandler}
-            disabled={loading || email === "" || password === ""}
+            disabled={isloading || email === "" || password === ""}
           >
-            <Text style={{ color: "white", textAlign: "center" }}>{loading ? "Logging in..." : "Log In"}</Text>
+            <Text style={{ color: "white", textAlign: "center" }}>{isloading ? "Logging in..." : "Log In"}</Text>
           </TouchableOpacity>
 
           <Text style={styles.or}>OR</Text>
           <Text style={styles.or}>Continue with</Text>
           
           <GoogleSigninButton
-            style={{ margin: 20, width: "auto" }}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Light}
-            onPress={signIn}
-          />
+  style={{ margin: 20, width: "auto" }}
+  size={GoogleSigninButton.Size.Wide}
+  color={GoogleSigninButton.Color.Light}
+  onPress={signIn}
+  disabled={loading}
+/>
         </View>
       </View>
 

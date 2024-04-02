@@ -22,7 +22,7 @@ export const store = configureStore({
 // export const server = "https://aroma-backend-rmag.onrender.com/api/v1"
 
 //Home IP
-// export const server = "http://192.168.254.157:5000/api/v1"
+export const server = "http://192.168.254.157:5000/api/v1"
 
 //Kapehan IP
 // export const server = "http://192.168.0.183:5000/api/v1"
@@ -40,7 +40,7 @@ export const store = configureStore({
 // export const server = "http://192.168.43.185:5000/api/v1"
 
 //hotspot ni ej
-export const server = "http://192.168.65.54:5000/api/v1"
+// export const server = "http://192.168.65.54:5000/api/v1"
 
 
 //bahay ni ej IP 2.4g
