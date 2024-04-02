@@ -70,22 +70,28 @@ const Footer = ({ activeRoute = "home" }) => {
       >
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => navigationHandler(1)}
+          onPress={() => navigationHandler(0)}
         >
-          <Badge
-            visible={cartItems.length > 0}
-            size={20}
-            style={{ position: "absolute", top: -4, right: -4, zIndex: 1 }}
-          >
-            {cartItems.length}
-          </Badge>
           <Avatar.Icon
             {...avatarOptions}
-            icon={activeRoute === "cart" ? "cart" : "cart-outline"}
+            icon={activeRoute === "home" ? "home" : "home-outline"}
           />
-          <Text style={textOptions}>Cart</Text>
+          <Text style={textOptions}>Home</Text>
         </TouchableOpacity>
-
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigationHandler(3)}
+        >
+          <Avatar.Icon
+            {...avatarOptions}
+            icon={
+              activeRoute === "profile"
+                ? "account-circle"
+                : "account-circle-outline"
+            }
+          />
+          <Text style={textOptions}>Profile</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => navigationHandler(2)}
@@ -106,28 +112,20 @@ const Footer = ({ activeRoute = "home" }) => {
 
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => navigationHandler(0)}
+          onPress={() => navigationHandler(1)}
         >
+          <Badge
+            visible={cartItems.length > 0}
+            size={20}
+            style={{ position: "absolute", top: -4, right: -4, zIndex: 1 }}
+          >
+            {cartItems.length}
+          </Badge>
           <Avatar.Icon
             {...avatarOptions}
-            icon={activeRoute === "home" ? "home" : "home-outline"}
+            icon={activeRoute === "cart" ? "cart" : "cart-outline"}
           />
-          <Text style={textOptions}>Home</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => navigationHandler(3)}
-        >
-          <Avatar.Icon
-            {...avatarOptions}
-            icon={
-              activeRoute === "profile"
-                ? "account-circle"
-                : "account-circle-outline"
-            }
-          />
-          <Text style={textOptions}>Profile</Text>
+          <Text style={textOptions}>Cart</Text>
         </TouchableOpacity>
       </View>
     </View>
