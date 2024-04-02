@@ -12,6 +12,7 @@ import { passwordResetEmailTemplate } from "../utils/emailHTMLTemplate.js";
 
 import cloudinary from "cloudinary";
 
+// Login
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email }).select("+password");
@@ -32,6 +33,7 @@ export const login = async (req, res, next) => {
   sendToken(user, res, `Welcome Back, ${user.name}`, 200);
 };
 
+// Sign up
 export const signup = asyncError(async (req, res, next) => {
   const { name, email, password, address, city, country, pinCode, googleId } =
     req.body;
@@ -108,6 +110,7 @@ export const getMyProfile = asyncError(async (req, res, next) => {
   });
 });
 
+// Logout
 export const logOut = asyncError(async (req, res, next) => {
   res
     .status(200)
@@ -121,6 +124,7 @@ export const logOut = asyncError(async (req, res, next) => {
     });
 });
 
+// Update user profile
 export const updateProfile = asyncError(async (req, res, next) => {
   const user = await User.findById(req.user._id);
 
@@ -145,6 +149,7 @@ export const updateProfile = asyncError(async (req, res, next) => {
   });
 });
 
+// User change password
 export const changePassword = asyncError(async (req, res, next) => {
   const user = await User.findById(req.user._id).select("+password");
 
@@ -168,6 +173,7 @@ export const changePassword = asyncError(async (req, res, next) => {
   });
 });
 
+// User image update
 export const updatePic = asyncError(async (req, res, next) => {
   const user = await User.findById(req.user._id);
 
@@ -189,6 +195,7 @@ export const updatePic = asyncError(async (req, res, next) => {
   });
 });
 
+// User Forget Password
 export const forgetPassword = asyncError(async (req, res, next) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
@@ -252,6 +259,7 @@ export const forgetPassword = asyncError(async (req, res, next) => {
 //   });
 // });
 
+// User Reset Password
 export const resetPassword = asyncError(async (req, res, next) => {
   const { otp, password } = req.body;
 
@@ -280,6 +288,7 @@ export const resetPassword = asyncError(async (req, res, next) => {
   });
 });
 
+// Google Login
 export const googleLogin = asyncError(async (req, res, next) => {
   const user = await User.findOne({ googleId: req.payload.sub });
 
@@ -290,6 +299,7 @@ export const googleLogin = asyncError(async (req, res, next) => {
   sendToken(user, res, `Welcome Back, ${user.name}`, 200);
 });
 
+// Delete User
 export const deleteUser = asyncError(async (req, res, next) => {
   const user = await User.findById(req.params.id);
   if (!user) return next(new ErrorHandler("User Not Found", 404));
