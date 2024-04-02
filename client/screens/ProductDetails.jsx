@@ -41,7 +41,7 @@ const ProductDetails = ({ route: { params } }) => {
   const comments = useSelector((state) => state.comment.comments); // Fetch comments from Redux store
   const average = useSelector((state) => state.comment.averageRating); // Fetch comments from Redux store
   const loading = useSelector((state) => state.comment.loading); // Fetch loading state from Redux store
-
+  const shouldDisplayComment = !!user;
   // console.log("currently log in:", user);
   const {
     product: { name, price, stock, description, images },
@@ -354,7 +354,7 @@ const ProductDetails = ({ route: { params } }) => {
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
-      <Comment />
+      {shouldDisplayComment && <Comment />}
     </ScrollView>
   );
 };
