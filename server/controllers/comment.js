@@ -147,6 +147,8 @@ export const deleteComment = asyncError(async (req, res, next) => {
   }
 });
 
+// Rate a product
+
 export const getProductRatings = asyncError(async (req, res, next) => {
   try {
     const productId = req.params.productId; 

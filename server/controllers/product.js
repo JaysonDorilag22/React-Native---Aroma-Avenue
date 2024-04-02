@@ -67,6 +67,7 @@ export const getProductDetails = asyncError(async (req, res, next) => {
   });
 });
 
+// Create a product
 export const createProduct = asyncError(async (req, res, next) => {
   const { name, description, category, price, stock } = req.body;
 
@@ -94,6 +95,7 @@ export const createProduct = asyncError(async (req, res, next) => {
   });
 });
 
+// Update a product
 export const updateProduct = asyncError(async (req, res, next) => {
   const { name, description, category, price, stock } = req.body;
 
@@ -114,6 +116,7 @@ export const updateProduct = asyncError(async (req, res, next) => {
   });
 });
 
+// Add image to the product
 export const addProductImage = asyncError(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
   if (!product) return next(new ErrorHandler("Product not found", 404));
@@ -136,6 +139,7 @@ export const addProductImage = asyncError(async (req, res, next) => {
   });
 });
 
+// Delete the  Image from the product
 export const deleteProductImage = asyncError(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
   if (!product) return next(new ErrorHandler("Product not found", 404));
@@ -163,6 +167,8 @@ export const deleteProductImage = asyncError(async (req, res, next) => {
     message: "Image Deleted Successfully",
   });
 });
+
+// Delete a product
 
 export const deleteProduct = asyncError(async (req, res, next) => {
   try {
