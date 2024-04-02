@@ -171,6 +171,7 @@ export const getAllContacts = asyncError(async (req, res) => {
   }
 })
 
+// Send messages
 export const sendMessage = asyncError(async (req, res) => {
   try {
     const { userId, recepientId, messageType, message } = req.body;
@@ -193,6 +194,7 @@ export const sendMessage = asyncError(async (req, res) => {
   }
 });
 
+// Fetch user details
 export const getUserDetails = asyncError(async (req, res) => {
   try {
     const { userId } = req.params;
