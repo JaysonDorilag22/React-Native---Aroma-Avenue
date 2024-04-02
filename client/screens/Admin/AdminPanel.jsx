@@ -7,7 +7,7 @@ import { getAdminProducts } from "../../redux/actions/productActions";
 import { getAllCategories } from "../../redux/actions/otherActions";
 import { colors, defaultStyle, formHeading } from "../../styles/styles";
 import Header from "../../components/Header";
-import AdminButtonBox from "../../components/AdminButtonBox";
+import AdminButtonBox from  "../../components/AdminButtonBox";
 import ProductListHeading from "../../components/ProductListHeading";
 import ProductListItem from "../../components/ProductListItem";
 
@@ -57,7 +57,7 @@ const AdminPanel = ({ navigation }) => {
 
   const deleteProductHandler = async (id) => {
     try {
-      await     dispatch(deleteProduct(id));
+      await dispatch(deleteProduct(id));
 
       fetchProducts();
     } catch (error) {
