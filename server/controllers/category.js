@@ -4,6 +4,7 @@ import { getDataUri } from "../utils/features.js";
 import cloudinary from "cloudinary";
 import { Category } from "../models/category.js";
 
+// Add category image
 
 export const addCategoryImage = asyncError(async (req, res, next) => {
     const category = await Category.findById(req.params.id);
@@ -38,6 +39,8 @@ export const getCategoryDetails = asyncError(async (req, res, next) => {
     });
 });
 
+// Create a category
+
 export const createcategory = asyncError(async (req, res, next) => {
     const { category} = req.body;
     
@@ -60,6 +63,8 @@ export const createcategory = asyncError(async (req, res, next) => {
         message: "Category Created Successfully",
     });
 });
+
+// Update a category 
 
 export const updateCategory = asyncError(async (req, res, next) => {
     const { category} = req.body;
@@ -84,6 +89,8 @@ export const getAllCategories = asyncError(async (req, res, next) => {
         categories,
     });
 });
+
+// Delete a category image
 
 export const deleteCategoryImage = asyncError(async (req, res, next) => {
     const category = await Category.findById(req.params.id);
@@ -112,6 +119,8 @@ export const deleteCategoryImage = asyncError(async (req, res, next) => {
         message: "Image Deleted Successfully",
     });
 });
+
+// Delete a category
 
 export const deleteCategory = asyncError(async (req, res, next) => {
     const category = await Category.findById(req.params.id);
