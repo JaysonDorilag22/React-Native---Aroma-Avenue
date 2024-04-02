@@ -1,4 +1,4 @@
-import { View, Dimensions, Text } from "react-native";
+import { View, ScrollView, Dimensions, Text } from "react-native";
 import React from "react";
 import { BarChart } from "react-native-chart-kit";
 import { colors } from "../styles/styles";
@@ -36,7 +36,7 @@ const UserSalesChart = ({ data }) => {
     }
 
     return (
-        <View>
+        <ScrollView horizontal={true}>
             <BarChart
                 data={{
                     labels: labels,
@@ -44,21 +44,29 @@ const UserSalesChart = ({ data }) => {
                         { data: transformedData }
                     ]
                 }}
-                width={screenWidth}
-                height={200}
+                height={300}
+                width={1000}
                 yAxisLabel="$"
-                // yAxisSuffix="k"
                 yAxisInterval={1} // optional, defaults to 1
-                chartConfig={chartConfig}
+                chartConfig={{
+                    ...chartConfig,
+                    labelColor: () => colors.color1, // Change label color if needed
+                    decimalPlaces: 0, // optional, defaults to 2dp
+                    style: {
+                        borderRadius: 16
+                    },
+                    propsForLabels: {
+                        fontSize: 10, // Adjust font size as per your requirement
+                        fontWeight: 'bold' // Optional: Adjust font weight
+                    }
+                }}
                 style={{
                     marginVertical: 8,
-                    borderRadius: 16
                 }}
-                // backgroundColor={colors.color3}
                 absolute
                 bezier
             />
-        </View>
+        </ScrollView>
     );
 };
 

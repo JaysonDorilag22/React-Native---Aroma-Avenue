@@ -11,7 +11,6 @@ import slide1 from '../assets/carousel/slide1.png';
 import slide2 from '../assets/carousel/slide2.png';
 import slide3 from '../assets/carousel/slide3.png';
 import slide4 from '../assets/carousel/slide4.png';
-// import slide5 from '../assets/carousel/slide5.png';
 import Header from "../components/Header";
 import SearchModal from "../components/SearchModal";
 import ProductCard from "../components/ProductCard";
@@ -105,7 +104,6 @@ const Home = () => {
       { title: slide2 },
       { title: slide3 },
       { title: slide4 },
-     
     ];
     setCarouselItems(carouselData);
   }, []);
@@ -170,7 +168,9 @@ const Home = () => {
         <View
           style={{
             flexDirection: "row",
-            height: 50,
+            height: 70,
+            margin:10
+            
           }}
         >
           <ScrollView
@@ -202,25 +202,16 @@ const Home = () => {
             
             {/* Other categories buttons */}
             {categories.map((item, index) => (
-              <Button
+              <TouchableOpacity
                 key={item._id}
-                style={{
-                  backgroundColor:
-                    category === item._id ? colors.color1 : colors.color5,
-                  borderRadius: 5,
-                  margin: 5,
-                }}
+                style={{ margin: 5 }}
                 onPress={() => categoryButtonHandler(item._id)}
               >
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: category === item._id ? colors.color2 : "gray",
-                  }}
-                >
-                  {item.category}
-                </Text>
-              </Button>
+                <View style={{ alignItems: 'center' }}>
+                  <Image source={{ uri: item.images[0]?.url }} style={{ width: 50, height: 50, borderRadius: 25 }} />
+                  <Text style={{ fontSize: 12, color: category === item._id ? "black" : "gray" }}>{item.category}</Text>
+                </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
