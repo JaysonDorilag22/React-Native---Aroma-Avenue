@@ -11,7 +11,7 @@ const initialState = {
   contact: {},
   recepientData: {},
   messages: [],
-  allMessages: []
+  allMessages: [],
 };
 
 export const chatReducer = createReducer(initialState, (builder) => {
@@ -54,7 +54,9 @@ export const chatReducer = createReducer(initialState, (builder) => {
     })
     .addCase("acceptContactRequestSuccess", (state, action) => {
       state.loading = false;
-      state.contactRequests = state.contactRequests.filter(userId => userId !== action.payload);
+      state.contactRequests = state.contactRequests.filter(
+        (userId) => userId !== action.payload
+      );
     })
     .addCase("fetchAcceptedContactsSuccess", (state, action) => {
       state.loading = false;
@@ -117,10 +119,10 @@ export const chatReducer = createReducer(initialState, (builder) => {
     .addCase("clearMessage", (state) => {
       state.message = null;
     })
-    .addCase("resetMessages", (state)=>{
-      state.messages = []
+    .addCase("resetMessages", (state) => {
+      state.messages = [];
     })
-    .addCase("resetContacts", (state)=>{
-      state.contacts = []
-    })
+    .addCase("resetContacts", (state) => {
+      state.contacts = [];
+    });
 });

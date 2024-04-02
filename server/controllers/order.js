@@ -3,7 +3,11 @@ import { Order } from "../models/order.js";
 import { Product } from "../models/product.js";
 import { stripe } from "../server.js";
 import ErrorHandler from "../utils/error.js";
-import { preparingTemplate, shippedTemplate, deliveredTemplate } from "../utils/emailHTMLTemplate.js";
+import {
+  preparingTemplate,
+  shippedTemplate,
+  deliveredTemplate,
+} from "../utils/emailHTMLTemplate.js";
 import { sendEmail } from "../utils/features.js";
 export const processPayment = asyncError(async (req, res, next) => {
   const { totalAmount } = req.body;
@@ -62,7 +66,11 @@ export const createOrder = asyncError(async (req, res, next) => {
   }
 
   try {
-    await sendEmail("Order Preparing", req.user.email, preparingTemplate(order));
+    await sendEmail(
+      "Order Preparing",
+      req.user.email,
+      preparingTemplate(order)
+    );
   } catch (error) {
     console.error("Error sending email:", error);
   }
@@ -72,7 +80,6 @@ export const createOrder = asyncError(async (req, res, next) => {
     message: "Order Placed Successfully",
   });
 });
-
 
 // export const createOrder = asyncError(async (req, res, next) => {
 //   const {
@@ -145,24 +152,25 @@ export const proccessOrder = asyncError(async (req, res, next) => {
 
   if (order.orderStatus === "Preparing") {
     order.orderStatus = "Shipped";
-    
+
     try {
       await sendEmail("Order Shipped", req.user.email, shippedTemplate(order));
     } catch (error) {
       console.error("Error sending email:", error);
     }
-
   } else if (order.orderStatus === "Shipped") {
     order.orderStatus = "Delivered";
     order.deliveredAt = new Date(Date.now());
 
     try {
-      await sendEmail("Order Delivered", req.user.email, deliveredTemplate(order));
+      await sendEmail(
+        "Order Delivered",
+        req.user.email,
+        deliveredTemplate(order)
+      );
     } catch (error) {
       console.error("Error sending email:", error);
-
     }
-
   } else {
     return next(new ErrorHandler("Order Already Delivered", 400));
   }
@@ -203,34 +211,34 @@ export const getOrdersCountByDay = asyncError(async (req, res, next) => {
   const ordersCountByProduct = await Order.aggregate([
     {
       $match: {
-        createdAt: { $gte: startOfToday, $lte: endOfToday }
-      }
+        createdAt: { $gte: startOfToday, $lte: endOfToday },
+      },
     },
     { $unwind: "$orderItems" },
     {
       $group: {
         _id: "$orderItems.product",
-        totalAmount: { $sum: "$orderItems.price" }
-      }
+        totalAmount: { $sum: "$orderItems.price" },
+      },
     },
     {
       $lookup: {
         from: "products",
         localField: "_id",
         foreignField: "_id",
-        as: "productData"
-      }
+        as: "productData",
+      },
     },
     { $unwind: "$productData" },
     {
       $project: {
         _id: "$productData.name",
-        totalAmount: 1
-      }
+        totalAmount: 1,
+      },
     },
     {
-      $sort: { totalAmount: -1 }
-    }
+      $sort: { totalAmount: -1 },
+    },
   ]);
 
   res.status(200).json({
@@ -240,44 +248,45 @@ export const getOrdersCountByDay = asyncError(async (req, res, next) => {
 });
 
 //for pie chart
-export const getOrderedProductsCountByCategory = asyncError(async (req, res, next) => {
-  const productsCountByCategory = await Order.aggregate([
-    { $unwind: "$orderItems" },
-    {
-      $lookup: {
-        from: "products",
-        localField: "orderItems.product",
-        foreignField: "_id",
-        as: "productInfo"
-      }
-    },
-    { $unwind: "$productInfo" },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "productInfo.category",
-        foreignField: "_id",
-        as: "categoryInfo"
-      }
-    },
-    { $unwind: "$categoryInfo" },
-    {
-      $group: {
-        _id: "$categoryInfo.category",
-        count: { $sum: "$orderItems.quantity" }
-      }
-    },
-    {
-      $sort: { count: -1 }
-    }
-  ]);
+export const getOrderedProductsCountByCategory = asyncError(
+  async (req, res, next) => {
+    const productsCountByCategory = await Order.aggregate([
+      { $unwind: "$orderItems" },
+      {
+        $lookup: {
+          from: "products",
+          localField: "orderItems.product",
+          foreignField: "_id",
+          as: "productInfo",
+        },
+      },
+      { $unwind: "$productInfo" },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "productInfo.category",
+          foreignField: "_id",
+          as: "categoryInfo",
+        },
+      },
+      { $unwind: "$categoryInfo" },
+      {
+        $group: {
+          _id: "$categoryInfo.category",
+          count: { $sum: "$orderItems.quantity" },
+        },
+      },
+      {
+        $sort: { count: -1 },
+      },
+    ]);
 
-
-res.status(200).json({
-    success: true,
-    productsCountByCategory,
-  });
-});
+    res.status(200).json({
+      success: true,
+      productsCountByCategory,
+    });
+  }
+);
 
 export const getOrdersSumByMonth = async (req, res) => {
   const threeMonthsAgo = new Date();
@@ -287,31 +296,31 @@ export const getOrdersSumByMonth = async (req, res) => {
     const orders = await Order.aggregate([
       {
         $match: {
-          createdAt: { $gte: threeMonthsAgo }
-        }
+          createdAt: { $gte: threeMonthsAgo },
+        },
       },
       {
         $group: {
           _id: { $month: "$createdAt" },
-          totalAmount: { $sum: "$totalAmount" }
-        }
+          totalAmount: { $sum: "$totalAmount" },
+        },
       },
       {
-        $sort: { _id: 1 }
-      }
+        $sort: { _id: 1 },
+      },
     ]);
 
     console.log(orders);
 
     res.status(200).json({
       success: true,
-      ordersSumByMonth: orders
+      ordersSumByMonth: orders,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       success: false,
-      message: 'An error occurred while fetching the orders sum by month.'
+      message: "An error occurred while fetching the orders sum by month.",
     });
   }
 };
