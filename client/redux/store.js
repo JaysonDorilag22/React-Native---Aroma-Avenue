@@ -37,8 +37,10 @@ export const store = configureStore({
 // export const server = "http://192.168.100.63:5000/api/v1"
 
 // aybi hatspat
-export const server = "http://192.168.43.185:5000/api/v1"
+// export const server = "http://192.168.43.185:5000/api/v1"
 
+//hotspot ni ej
+export const server = "http://192.168.65.54:5000/api/v1"
 
 
 //bahay ni ej IP 2.4g

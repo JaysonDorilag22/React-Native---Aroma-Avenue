@@ -7,7 +7,7 @@ import { getAdminProducts } from "../../redux/actions/productActions";
 import { getAllCategories } from "../../redux/actions/otherActions";
 import { colors, defaultStyle, formHeading } from "../../styles/styles";
 import Header from "../../components/Header";
-import AdminButtonBox from  "../../components/AdminButtonBox";
+import AdminButtonBox from "../../components/AdminButtonBox";
 import ProductListHeading from "../../components/ProductListHeading";
 import ProductListItem from "../../components/ProductListItem";
 
@@ -17,9 +17,11 @@ const AdminPanel = ({ navigation }) => {
 
   // Use useSelector to get products and categories from Redux store
   const products = useSelector((state) => state.product.products);
-  console.log("this are the products",products)
+  console.log("this are the products", products);
+
   useEffect(() => {
     dispatch(getAllCategories());
+    fetchProducts();
   }, [dispatch, isFocused]);
 
   const fetchProducts = async () => {
@@ -50,16 +52,10 @@ const AdminPanel = ({ navigation }) => {
     }
   };
 
-  // const deleteProductHandler = (id) => {
-  //   dispatch(deleteProduct(id));
-  //   fetchProducts(); // Refresh products after deleting
-  // };
-
   const deleteProductHandler = async (id) => {
     try {
       await dispatch(deleteProduct(id));
-
-      fetchProducts();
+      fetchProducts(); // Fetch products again after deleting
     } catch (error) {
       console.error("Error deleting product:", error);
     }
@@ -126,26 +122,26 @@ const AdminPanel = ({ navigation }) => {
       <ProductListHeading />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-  {/* Log products and their associated categories */}
-  {products.map((item, index) => {
-    return (
-      <ProductListItem
-        navigate={navigation}
-        deleteHandler={deleteProductHandler}
-        key={item._id}
-        id={item._id}
-        i={index}
-        price={item.price}
-        stock={item.stock}
-        name={item.name}
-        images={item.images.length > 0 ? [item.images[0]] : []} 
-        category={item.category ? item.category.category : "Uncategorized"} // Access the category name
-      />
-    );
-  })}
-</ScrollView>
-
-
+        {/* Log products and their associated categories */}
+        {products.map((item, index) => {
+          return (
+            <ProductListItem
+              navigate={navigation}
+              deleteHandler={deleteProductHandler}
+              key={item._id}
+              id={item._id}
+              i={index}
+              price={item.price}
+              stock={item.stock}
+              name={item.name}
+              images={item.images.length > 0 ? [item.images[0]] : []}
+              category={
+                item.category ? item.category.category : "Uncategorized"
+              } // Access the category name
+            />
+          );
+        })}
+      </ScrollView>
     </View>
   );
 };
