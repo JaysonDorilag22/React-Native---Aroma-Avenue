@@ -26,7 +26,7 @@ const ProductSalesChart = ({ data }) => {
         name: item._id,
         population: item.count,
         color: getRandomColorComplimentaryToRedAndBlack(),
-        legendFontColor: colors.color2,
+        legendFontColor: "black",
       }));
 
     console.log("Products Sales Chart:",data);
