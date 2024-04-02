@@ -194,16 +194,17 @@ const Profile = ({ navigation, route }) => {
                                         reverse={true}
                                     />
                                 )}
+                                 <ButtonBox
+                                    handler={navigateHandler}
+                                    text={"Profile"}
+                                    icon={"account-circle-outline"}
+                                />
                                 <ButtonBox
                                     handler={navigateHandler}
                                     text={"Password"}
                                     icon={"pencil-outline"}
                                 />
-                                <ButtonBox
-                                    handler={navigateHandler}
-                                    text={"Profile"}
-                                    icon={"account-circle-outline"}
-                                />
+                               
                             </View>
 
                             <View>
