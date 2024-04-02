@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
     width: 200,
     height: "100%",
     resizeMode: "contain",
-    top: "-20%",
-    left: "10%",
+    top: "-5%",
+    left: "-15%",
   },
   qtyText: {
     backgroundColor: colors.color4,
