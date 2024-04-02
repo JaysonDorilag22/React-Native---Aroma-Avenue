@@ -72,7 +72,7 @@ const Payment = ({ navigation, route }) => {
 
       const init = await stripe.initPaymentSheet({
         paymentIntentClientSecret: client_secret,
-        merchantDisplayName: "6PackEcom",
+        merchantDisplayName: "Aroma Avenue",
       });
 
       if (init.error)
