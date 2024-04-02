@@ -19,6 +19,7 @@ export const processPayment = asyncError(async (req, res, next) => {
   });
 });
 
+// Create an order
 export const createOrder = asyncError(async (req, res, next) => {
   const {
     shippingInfo,
@@ -139,6 +140,7 @@ export const getOrderDetails = asyncError(async (req, res, next) => {
   });
 });
 
+// Process Orders
 export const proccessOrder = asyncError(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
   if (!order) return next(new ErrorHandler("Order Not Found", 404));
@@ -192,7 +194,7 @@ export const proccessOrder = asyncError(async (req, res, next) => {
 //   });
 // });
 
-//for bar chart
+// Bar Chart (Orders by the Day)
 export const getOrdersCountByDay = asyncError(async (req, res, next) => {
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
@@ -239,7 +241,7 @@ export const getOrdersCountByDay = asyncError(async (req, res, next) => {
   });
 });
 
-//for pie chart
+// Pie Chart (Orders based on Category)
 export const getOrderedProductsCountByCategory = asyncError(async (req, res, next) => {
   const productsCountByCategory = await Order.aggregate([
     { $unwind: "$orderItems" },
@@ -279,6 +281,7 @@ res.status(200).json({
   });
 });
 
+// Monthly Orders
 export const getOrdersSumByMonth = async (req, res) => {
   const threeMonthsAgo = new Date();
   threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
