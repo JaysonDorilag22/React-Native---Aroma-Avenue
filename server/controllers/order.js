@@ -249,7 +249,6 @@ export const getOrdersCountByDay = asyncError(async (req, res, next) => {
   });
 });
 
-<<<<<<< HEAD
 //for pie chart
 export const getOrderedProductsCountByCategory = asyncError(
   async (req, res, next) => {
@@ -283,40 +282,6 @@ export const getOrderedProductsCountByCategory = asyncError(
         $sort: { count: -1 },
       },
     ]);
-=======
-// Pie Chart (Orders based on Category)
-export const getOrderedProductsCountByCategory = asyncError(async (req, res, next) => {
-  const productsCountByCategory = await Order.aggregate([
-    { $unwind: "$orderItems" },
-    {
-      $lookup: {
-        from: "products",
-        localField: "orderItems.product",
-        foreignField: "_id",
-        as: "productInfo"
-      }
-    },
-    { $unwind: "$productInfo" },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "productInfo.category",
-        foreignField: "_id",
-        as: "categoryInfo"
-      }
-    },
-    { $unwind: "$categoryInfo" },
-    {
-      $group: {
-        _id: "$categoryInfo.category",
-        count: { $sum: "$orderItems.quantity" }
-      }
-    },
-    {
-      $sort: { count: -1 }
-    }
-  ]);
->>>>>>> 38ed461bfefb49ad25bbb7d61131523ef55b9389
 
     res.status(200).json({
       success: true,
