@@ -42,7 +42,6 @@ const ProductDetails = ({ route: { params } }) => {
   const average = useSelector((state) => state.comment.averageRating); // Fetch comments from Redux store
   const loading = useSelector((state) => state.comment.loading); // Fetch loading state from Redux store
   const shouldDisplayComment = !!user;
-  // console.log("currently log in:", user);
   const {
     product: { name, price, stock, description, images },
   } = useSelector((state) => state.product);
@@ -99,6 +98,7 @@ const ProductDetails = ({ route: { params } }) => {
       text1: "Added To Cart",
     });
   };
+  console.log("currently log in:", user._id);
 
   const addToWishlistHandler = (id, name, price, image, stock) => {
     if (!user) {
@@ -129,6 +129,7 @@ const ProductDetails = ({ route: { params } }) => {
         type: "success",
         text1: "Comment deleted successfully",
       });
+      dispatch(getAllComments(params.id));
     } catch (error) {
       console.error("Error deleting comment:", error);
       Toast.show({
@@ -298,8 +299,8 @@ const ProductDetails = ({ route: { params } }) => {
         >
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>
             Customer reviews {"("}
-            {comments.length}
-            {")"}
+            {comments.length} 
+            {")"}{user.name}
           </Text>
         </View>
         <View
@@ -329,7 +330,7 @@ const ProductDetails = ({ route: { params } }) => {
               <Text>Comment: {item.text}</Text>
               {user &&
                 (user.role === "admin" ||
-                  item.user === user._id ||
+                  item.user._id === user._id ||
                   user.role === "Guest") && (
                   <TouchableOpacity
                     onPress={() => handleDeleteComment(item._id)}
@@ -345,9 +346,12 @@ const ProductDetails = ({ route: { params } }) => {
                   marginTop: 10,
                 }}
               />
+              {console.log("Item User:", item.user._id)}
+              {console.log("who comment User:", user._id)}
+
+
               {/* Logging user.id */}
               {/* {console.log("User:", user)}
-              {console.log("Item User:", item.user)}
               {console.log("User Role:", user.role)} */}
             </View>
           )}

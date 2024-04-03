@@ -15,7 +15,7 @@ const Analytics = ({ navigation }) => {
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
 
-    const { chartData, chartData2, chartData3, loading, error } = useChartData(
+    const { chartData, xchartData2, chartData3, loading, error } = useChartData(
         dispatch,
         isFocused
     );

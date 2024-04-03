@@ -66,13 +66,15 @@ export const getContactRequest = asyncError(async (req, res) => {
 
 export const acceptContactRequest = asyncError(async (req, res) => {
   try {
+    // Extract current user ID and selected user ID from request body
     const currentUserId = req.body.currentUserId;
     const selectedUserId = req.body.selectedUserId;
 
-
+    // Find sender and recipient user 
     const sender = await User.findById(currentUserId);
-    const recepient = await User.findById(selectedUserId);
+    const recipient = await User.findById(selectedUserId);
 
+    // Remove selectedUserId from sender's sentContactRequest and contactRequest arrays
     const sentIndexSender = sender.sentContactRequest.indexOf(selectedUserId);
     if (sentIndexSender !== -1) {
       sender.sentContactRequest.splice(sentIndexSender, 1);
@@ -82,49 +84,36 @@ export const acceptContactRequest = asyncError(async (req, res) => {
       sender.contactRequest.splice(receivedIndexSender, 1);
     }
 
-    const receivedIndexRecepient = recepient.contactRequest.indexOf(currentUserId);
-    if (receivedIndexRecepient !== -1) {
-      recepient.contactRequest.splice(receivedIndexRecepient, 1);
+    // Remove currentUserId from recipient's contactRequest and sentContactRequest arrays
+    const receivedIndexRecipient = recipient.contactRequest.indexOf(currentUserId);
+    if (receivedIndexRecipient !== -1) {
+      recipient.contactRequest.splice(receivedIndexRecipient, 1);
     }
-    const sentIndexRecepient = recepient.sentContactRequest.indexOf(currentUserId);
-    if (sentIndexRecepient !== -1) {
-      recepient.sentContactRequest.splice(sentIndexRecepient, 1);
+    const sentIndexRecipient = recipient.sentContactRequest.indexOf(currentUserId);
+    if (sentIndexRecipient !== -1) {
+      recipient.sentContactRequest.splice(sentIndexRecipient, 1);
     }
 
-
+    // Add selectedUserId to sender's contacts and currentUserId to recipient's contacts
     sender.contacts.push(selectedUserId);
-    recepient.contacts.push(currentUserId);
+    recipient.contacts.push(currentUserId);
 
+    // Save changes to sender and recipient 
     await sender.save();
-    await recepient.save();
+    await recipient.save();
 
+    // Respond with success message
     res.status(200).json({ message: "Contact Request accepted successfully" });
 
   } catch (error) {
+    // Handle errors
     console.log('acceptContactRequest controller error: ', error);
-
     res.status(500).json({ message: "Internal Server Error" });
   }
 })
 
+
 export const getAllContacts = asyncError(async (req, res) => {
-  // try {
-  //   const userId = req.user._id;
-
-  //   const user = await User.findById(userId).populate(
-  //     "contacts",
-  //     "name email avatar"
-  //   );
-  //   const acceptedContacts = user.contacts;
-
-  //   res.status(200).json({
-  //     success: true,
-  //     acceptedContacts
-  //   });
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).json({ error: "Internal Server Error" });
-  // }
   try {
     const userId = req.user._id;
   
